@@ -1,4 +1,7 @@
 package property;
+import java.util.concurrent.ThreadLocalRandom;
+
+import static utills.string.StringConvertor.convertStringToInt;
 
 public class DecimalProperty extends Property{
     private int value;
@@ -17,14 +20,15 @@ public class DecimalProperty extends Property{
     }
     public DecimalProperty(String name, int from, int to){
         super(name, PropertyType.DECIMAL, true, true);
+
         rangeFrom = from;
         rangeTo = to;
-        //todo - value should be random.
+        value = ThreadLocalRandom.current().nextInt(from, to + 1);
     }
     public DecimalProperty(String name){
         super(name, PropertyType.DECIMAL, false, true);
         rangeFrom = rangeTo = NO_RANGE_PROP;
-        //todo - value should be random.
+        value = ThreadLocalRandom.current().nextInt();
     }
     @Override
     public String getValue() {
@@ -32,6 +36,11 @@ public class DecimalProperty extends Property{
     }
     @Override
     public void setValue(String value) {
-        // todo - static method that will check the value type and will act accordingly
+        try {
+            this.value = convertStringToInt(value);
+        }
+        catch (NumberFormatException e) {
+            throw new NumberFormatException(e.getMessage() + "Error occurred in setValue in DecimalProperty class");
+        }
     }
 }
