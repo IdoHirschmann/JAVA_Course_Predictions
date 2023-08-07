@@ -1,19 +1,18 @@
-package property;
+package property.instance.impl;
+
+import property.definition.PropertyType;
+import property.instance.AbstractPropertyInstance;
 
 import java.util.Random;
 
-public class StringProperty extends Property{
+public class StringPropertyInstance extends AbstractPropertyInstance {
     private static final String ALLOWED_CHARACTERS = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!?,_-(). ";
     private static final int MAX_STRING_LENGTH = 50;
     private String value;
 
-    public StringProperty(String name, String value) {
-        super(name, PropertyType.STRING, false, false);
+    public StringPropertyInstance(String name, String value) {
+        super(name);
         this.value = value;
-    }
-    public StringProperty(String name) {
-        super(name, PropertyType.STRING, false, true);
-        value = generateRandomString();
     }
 
     private String generateRandomString() {
@@ -30,7 +29,7 @@ public class StringProperty extends Property{
         }
 
         return sb.toString();
-    }
+    } //todo - might not be here in the end
 
     @Override
     public String getValue() {
