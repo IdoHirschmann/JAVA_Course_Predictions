@@ -4,7 +4,7 @@ import expression.ExpressionType;
 import expression.api.Expression;
 
 public abstract class AbstractExpression implements Expression {
-    private String value;
+    private final String value;
     ExpressionType type;
 
     protected String getValue() {

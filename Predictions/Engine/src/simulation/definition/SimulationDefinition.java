@@ -10,10 +10,10 @@ import java.util.Map;
 
 public class SimulationDefinition {
     //Need factory to this class?
-    private Map<String, EntityDefinition> entitiesDef;
-    private Map<String, PropertyDefinition> environmentsDef;
-    private List<Rule> rules;
-    private Termination termination;
+    private final Map<String, EntityDefinition> entitiesDef;
+    private final Map<String, PropertyDefinition> environmentsDef;
+    private final List<Rule> rules;
+    private final Termination termination;
 
     public SimulationDefinition(Map<String, EntityDefinition> entitiesDef, Map<String, PropertyDefinition> environmentsDef, List<Rule> rules, Termination termination) {
         this.entitiesDef = entitiesDef;

@@ -5,12 +5,14 @@ import expression.ExpressionType;
 
 import java.util.stream.Stream;
 
+import static utills.helperFunction.Helper.environment;
+
 public class EnvironmentFunctionExpression extends AbstractFunctionExpression {
-    private String EnvironmentName;
+    private final String environmentName;
 
     public EnvironmentFunctionExpression(String value) {
         super(value, null);
-        EnvironmentName = GetEnvironmentNameFromValue();
+        environmentName = GetEnvironmentNameFromValue();
 
         String checkerType = GetExplicitValue(null);
         setType(getType(checkerType));
@@ -54,8 +56,11 @@ public class EnvironmentFunctionExpression extends AbstractFunctionExpression {
 
     @Override
     public String GetExplicitValue(EntityInstance entity) {
-        return null;
 
-        //todo - after we make the random function
+        String environmentVarValue = environment(environmentName);
+
+        setType(getType(environmentVarValue));
+
+        return environmentVarValue;
     }
 }

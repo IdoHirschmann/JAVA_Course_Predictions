@@ -1,8 +1,6 @@
 package simulation;
 
-import entity.definition.EntityDefinition;
 import entity.instance.EntityInstanceManager;
-import property.definition.PropertyDefinition;
 import property.instance.AbstractPropertyInstance;
 import rule.Rule;
 import termination.Termination;
@@ -14,7 +12,7 @@ import java.util.Map;
 public class Simulation {
     //Need factory to this class?
     private Map<String, EntityInstanceManager> entityManager;
-    private Map<String, AbstractPropertyInstance> environments;
+    private final Map<String, AbstractPropertyInstance> environments;
     private List<Rule> rules;
     private Termination termination;
     private LocalDate simulationStartTime;
@@ -28,7 +26,12 @@ public class Simulation {
         this.identifyNumber = identifyNumber;
         simulationStartTime = LocalDate.now();
     }
-    public void RunSimulation() {
+
+    public Map<String, AbstractPropertyInstance> getEnvironments() {
+        return environments;
+    }
+
+    public void runSimulation() {
         //todo - holy moly :(
     }
 }

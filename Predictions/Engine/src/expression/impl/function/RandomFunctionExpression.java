@@ -3,14 +3,13 @@ package expression.impl.function;
 import entity.instance.EntityInstance;
 import expression.ExpressionType;
 
-public class RandomFunctionExpression extends AbstractFunctionExpression {
-    private int randomArgument;
-    public RandomFunctionExpression(String value) {
-        super(value, ExpressionType.INT);
+import static utills.helperFunction.Helper.random;
 
-        String[] str = new String[]{value};
-        randomArgument = Integer.parseInt(str[7]);
-        //todo - check if really coorect
+public class RandomFunctionExpression extends AbstractFunctionExpression {
+    private final int randomArgument;
+    public RandomFunctionExpression(String value , int randomArgument) {
+        super(value, ExpressionType.INT);
+        this.randomArgument = randomArgument;
     }
 
     @Override
@@ -20,7 +19,6 @@ public class RandomFunctionExpression extends AbstractFunctionExpression {
 
     @Override
     public String GetExplicitValue(EntityInstance entity) {
-        return null;
-        //todo - after we make the random function
+        return random(randomArgument).toString();
     }
 }
