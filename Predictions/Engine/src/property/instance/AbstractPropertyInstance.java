@@ -1,8 +1,6 @@
 package property.instance;
 
-import property.definition.range.api.Range;
-
-import java.util.Random;
+import property.definition.range.Range;
 
 public abstract class AbstractPropertyInstance {
     private final String name;

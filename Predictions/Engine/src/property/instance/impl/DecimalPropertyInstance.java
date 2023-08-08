@@ -1,10 +1,6 @@
 package property.instance.impl;
-import property.definition.PropertyDefinition;
-import property.definition.PropertyType;
-import property.definition.range.api.Range;
+import property.definition.range.Range;
 import property.instance.AbstractPropertyInstance;
-
-import java.util.concurrent.ThreadLocalRandom;
 
 import static utills.string.StringConvertor.convertStringToInt;
 

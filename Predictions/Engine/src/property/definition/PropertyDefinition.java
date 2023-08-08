@@ -1,6 +1,6 @@
 package property.definition;
 
-import property.definition.range.api.Range;
+import property.definition.range.Range;
 import property.definition.value.Value;
 
 import java.util.Objects;

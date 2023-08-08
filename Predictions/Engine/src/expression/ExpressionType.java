@@ -1,5 +1,5 @@
 package expression;
 
 public enum ExpressionType {
-    NUMBER, STRING, BOOLEAN
+    INT, FLOAT, STRING, BOOLEAN
 }

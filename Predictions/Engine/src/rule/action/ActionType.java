@@ -1,0 +1,5 @@
+package rule.action;
+
+public enum ActionType {
+    INCREASE, DECREASE, MULTIPLY, DIVIDE, SINGLE_CONDITION, MULTIPLE_CONDITION, SET, KILL
+}
