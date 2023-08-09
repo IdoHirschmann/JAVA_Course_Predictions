@@ -12,7 +12,7 @@ import static utills.helperFunction.Helper.isDecimal;
 import static utills.helperFunction.Helper.isFloat;
 
 public class Increase extends AbstractNumericAction {
-    private Expression by;
+    private final Expression by;
 
     public Increase(EntityDefinition primaryEntityDefinition, String resultProp, Expression by) {
         super(primaryEntityDefinition, ActionType.INCREASE, resultProp);

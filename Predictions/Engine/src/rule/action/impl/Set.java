@@ -7,8 +7,8 @@ import rule.action.context.api.ActionContext;
 import rule.action.impl.AbstractAction;
 
 public class Set extends AbstractAction {
-    private String property;
-    private Expression value;
+    private final String property;
+    private final Expression value;
 
     public Set(EntityDefinition primaryEntityDefinition, String property, Expression value) {
         super(primaryEntityDefinition, ActionType.SET);
@@ -17,7 +17,7 @@ public class Set extends AbstractAction {
     }
 
     @Override
-    public void Invoke(ActionContext context) {
-        //todo - remember: the property can be property in the entityInstance or environment!!
+    public void Invoke(ActionContext context) throws Exception {//todo
+        context.getPrimaryEntityInstance().getProperty(property).setValue(value.GetExplicitValue(context.getPrimaryEntityInstance()));
     }
 }

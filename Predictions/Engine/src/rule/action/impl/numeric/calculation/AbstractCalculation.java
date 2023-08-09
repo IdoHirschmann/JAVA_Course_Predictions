@@ -15,4 +15,12 @@ public abstract class AbstractCalculation extends AbstractNumericAction {
         this.firstArgument = firstArgument;
         this.secondArgument = secondArgument;
     }
+
+    public Expression getFirstArgument() {
+        return firstArgument;
+    }
+
+    public Expression getSecondArgument() {
+        return secondArgument;
+    }
 }

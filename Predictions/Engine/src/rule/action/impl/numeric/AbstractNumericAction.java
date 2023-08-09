@@ -44,7 +44,7 @@ public abstract class AbstractNumericAction extends AbstractAction {
             //todo - exception (property not exist)
         }
     }
-
+    //todo- ask aviad if the action that gets propeties - are these props always belong to the main entity instance
     protected AbstractPropertyInstance extractProperty(ActionContext context) {
         AbstractPropertyInstance res = context.getEnvironmentVariable(resultProp);
 

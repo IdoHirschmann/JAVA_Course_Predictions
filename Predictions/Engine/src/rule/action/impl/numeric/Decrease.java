@@ -13,7 +13,7 @@ import static utills.helperFunction.Helper.isFloat;
 
 public class Decrease extends AbstractNumericAction {
 
-    private Expression by;
+    private final Expression by;
 
     public Decrease(EntityDefinition primaryEntityDefinition, String resultProp, Expression by) {
         super(primaryEntityDefinition,ActionType.DECREASE, resultProp);
