@@ -1,6 +1,6 @@
 package manager;
 
-import simulation.Simulation;
+import simulation.impl.Simulation;
 import simulation.definition.SimulationDefinition;
 
 import java.util.ArrayList;

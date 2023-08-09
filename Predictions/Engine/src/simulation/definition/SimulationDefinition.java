@@ -1,6 +1,7 @@
 package simulation.definition;
 
 import entity.definition.EntityDefinition;
+import expression.impl.property.AbstractPropertyExpression;
 import property.definition.PropertyDefinition;
 import rule.Rule;
 import termination.Termination;
@@ -13,12 +14,14 @@ public class SimulationDefinition {
     private final Map<String, EntityDefinition> entitiesDef;
     private final Map<String, PropertyDefinition> environmentsDef;
     private final List<Rule> rules;
+    private final AbstractPropertyExpression propertyExpression;
     private final Termination termination;
 
-    public SimulationDefinition(Map<String, EntityDefinition> entitiesDef, Map<String, PropertyDefinition> environmentsDef, List<Rule> rules, Termination termination) {
+    public SimulationDefinition(Map<String, EntityDefinition> entitiesDef, Map<String, PropertyDefinition> environmentsDef, List<Rule> rules,AbstractPropertyExpression propertyExpression, Termination termination) {
         this.entitiesDef = entitiesDef;
         this.environmentsDef = environmentsDef;
         this.rules = rules;
+        this.propertyExpression= propertyExpression;
         this.termination = termination;
     }
 
@@ -32,6 +35,10 @@ public class SimulationDefinition {
 
     public List<Rule> getRules() {
         return rules;
+    }
+
+    public AbstractPropertyExpression getPropertyExpression() {
+        return propertyExpression;
     }
 
     public Termination getTermination() {

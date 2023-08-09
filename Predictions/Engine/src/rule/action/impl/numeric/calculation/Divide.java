@@ -1,4 +1,4 @@
-package rule.action.impl.calculation;
+package rule.action.impl.numeric.calculation;
 
 import entity.definition.EntityDefinition;
 import expression.api.Expression;

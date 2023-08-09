@@ -5,7 +5,7 @@ import expression.api.Expression;
 
 public abstract class AbstractExpression implements Expression {
     private final String value;
-    ExpressionType type;
+    private ExpressionType type;
 
     protected String getValue() {
         return value;
@@ -18,5 +18,9 @@ public abstract class AbstractExpression implements Expression {
 
     protected void setType(ExpressionType type) {
         this.type = type;
+    }
+
+    public ExpressionType getType() {
+        return type;
     }
 }

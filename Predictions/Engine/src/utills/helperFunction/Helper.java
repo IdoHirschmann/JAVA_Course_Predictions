@@ -1,9 +1,8 @@
 package utills.helperFunction;
 
 import property.instance.AbstractPropertyInstance;
-import simulation.Simulation;
+import simulation.impl.Simulation;
 
-import java.util.Map;
 import java.util.Random;
 
 public abstract class Helper {
@@ -27,5 +26,22 @@ public abstract class Helper {
         }
 
         return environmentVariable.getValue();
+    }
+
+    public static Boolean isDecimal(String toCheck) {
+        try{
+            Integer.parseInt(toCheck);
+            return true;
+        } catch (NumberFormatException exception) {
+            return false;
+        }
+    }
+    public static Boolean isFloat(String toCheck) {
+        try{
+            Float.parseFloat(toCheck);
+            return true;
+        } catch (NumberFormatException exception) {
+            return false;
+        }
     }
 }

@@ -16,6 +16,10 @@ public abstract class AbstractPropertyInstance {
         this.range = range;
     }
 
+    public Boolean isInRange(Number number) {
+        return range.IsInRange(number);
+    }
+
     public abstract void setValue(String value);
     public abstract String getValue();
 }

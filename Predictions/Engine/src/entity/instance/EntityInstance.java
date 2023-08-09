@@ -8,6 +8,9 @@ import java.util.Map;
 public class EntityInstance {
     private Map<String, AbstractPropertyInstance> properties;
 
+    public AbstractPropertyInstance getProperty(String propertyName) {
+        return properties.get(propertyName);
+    }
     public String getSpecificPropertyValue (String propertyName) throws Exception {
         AbstractPropertyInstance propertyInstance = properties.get(propertyName);
 
