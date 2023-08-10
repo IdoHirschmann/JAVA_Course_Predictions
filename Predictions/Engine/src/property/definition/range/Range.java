@@ -1,28 +1,24 @@
 package property.definition.range;
 
 public class Range {
-    private Number from;
-    private Number to;
+    private double from;
+    private double to;
 
-    public Range(Number from, Number to) {
+    public Range(double from, double to) {
         this.from = from;
         this.to = to;
     }
 
-    public Number getFrom() {
+    public double getFrom() {
         return from;
     }
 
-    public Number getTo() {
+    public double getTo() {
         return to;
     }
 
-    public Boolean IsInRange(Number value) {
-        double doubleValue = value.doubleValue();
-        double doubleFrom = from.doubleValue();
-        double doubleTo = to.doubleValue();
-
-        if (doubleValue >= doubleFrom && doubleValue <= doubleTo) {
+    public Boolean IsInRange(double value) {
+        if (value >= from && value <= to) {
             return true;
         } else {
             return false;

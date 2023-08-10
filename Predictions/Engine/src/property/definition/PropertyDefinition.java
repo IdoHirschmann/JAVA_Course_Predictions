@@ -1,7 +1,7 @@
 package property.definition;
 
 import property.definition.range.Range;
-import property.definition.value.Value;
+import property.definition.value.PropertyDefinitionValue;
 
 import java.util.Objects;
 
@@ -9,11 +9,11 @@ public class PropertyDefinition {
     private final String name;
     private final PropertyType type;
     private final Range range;
-    private final Value value;
+    private final PropertyDefinitionValue value;
     protected static final int NO_RANGE_PROP = 0;
 
 
-    public PropertyDefinition(String name, PropertyType type,Value value ,Range range) {
+    public PropertyDefinition(String name, PropertyType type, PropertyDefinitionValue value , Range range) {
         this.name = name;
         this.type = type;
         this.value = value;
@@ -32,7 +32,7 @@ public class PropertyDefinition {
         return name;
     }
 
-    public Value getValue() {
+    public PropertyDefinitionValue getValue() {
         return value;
     }
 

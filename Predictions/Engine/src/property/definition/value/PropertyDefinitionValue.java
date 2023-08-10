@@ -1,10 +1,10 @@
 package property.definition.value;
 
-public class Value {
+public class PropertyDefinitionValue {
     private final boolean randomInitialize;
     private final String init;
 
-    public Value(boolean randomInitialize, String init) {
+    public PropertyDefinitionValue(boolean randomInitialize, String init) {
         this.randomInitialize = randomInitialize;
         this.init = init;
     }
