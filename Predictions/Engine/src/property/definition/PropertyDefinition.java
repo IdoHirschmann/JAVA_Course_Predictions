@@ -13,9 +13,22 @@ public class PropertyDefinition {
     protected static final int NO_RANGE_PROP = 0;
 
 
-    public PropertyDefinition(String name, PropertyType type, PropertyDefinitionValue value , Range range) {
+    public PropertyDefinition(String name, String type, PropertyDefinitionValue value , Range range) {
         this.name = name;
-        this.type = type;
+        switch (type) {
+            case "decimal":
+                this.type = PropertyType.DECIMAL;
+                break;
+            case "float":
+                this.type = PropertyType.FLOAT;
+                break;
+            case "boolean":
+                this.type = PropertyType.BOOLEAN;
+                break;
+            default:
+                this.type = PropertyType.STRING;
+                break;
+        }
         this.value = value;
         this.range = range;
     }
