@@ -15,11 +15,11 @@ public class Divide extends AbstractCalculation {
     }
 
     @Override
-    public void Invoke(ActionContext context) throws Exception {
+    public void Invoke(ActionContext context) {
         Number result;
 
         if((getSecondArgument().GetExplicitValue(context.getPrimaryEntityInstance()).equals("0"))) {
-            throw new Exception(); //todo- change
+            throw new RuntimeException(); //todo- change
         }
 
         //todo- ask aviad if in the creating of the actions will we already check the acutal value of the expressions so here well have them both as numbers
