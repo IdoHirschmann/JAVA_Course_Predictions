@@ -1,5 +1,6 @@
 package utills.helperFunction;
 
+import exception.PropertyNotFoundException;
 import property.instance.AbstractPropertyInstance;
 import simulation.impl.Simulation;
 
@@ -21,8 +22,7 @@ public abstract class Helper {
         AbstractPropertyInstance environmentVariable = currentSimulation.getEnvironments().get(name);
 
         if(environmentVariable == null){
-            //todo - throw non exist environment variable ref
-            throw new RuntimeException();
+            throw new PropertyNotFoundException("PropertyNotFoundException " + name + " was not found!" + " Problem occurred when running helper function 'environment' ");
         }
 
         return environmentVariable.getValue();

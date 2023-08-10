@@ -3,6 +3,8 @@ package expression.impl;
 import expression.ExpressionType;
 import expression.api.Expression;
 
+import java.util.Objects;
+
 public abstract class AbstractExpression implements Expression {
     private final String value;
     private ExpressionType type;
@@ -22,5 +24,18 @@ public abstract class AbstractExpression implements Expression {
 
     public ExpressionType getType() {
         return type;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        AbstractExpression that = (AbstractExpression) o;
+        return Objects.equals(value, that.value) && type == that.type;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(value, type);
     }
 }

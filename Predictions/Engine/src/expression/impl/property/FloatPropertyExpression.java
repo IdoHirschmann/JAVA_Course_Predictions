@@ -1,6 +1,7 @@
 package expression.impl.property;
 
 import entity.instance.EntityInstance;
+import exception.PropertyNotFoundException;
 import expression.ExpressionType;
 import property.instance.AbstractPropertyInstance;
 
@@ -9,20 +10,22 @@ public class FloatPropertyExpression extends AbstractPropertyExpression {
         super(value, ExpressionType.FLOAT);
     }
 
-    @Override
-    public String GetSimpleValue() {
-        return getValue();
-    }
 
     @Override
-    public String GetExplicitValue(EntityInstance entity) throws Exception {
+    public String GetExplicitValue(EntityInstance entity) {
+        String res;
         AbstractPropertyInstance environment = getEnvironments().getEnvironment(getValue());
 
         if(environment != null) {
-            return environment.getValue();
+            res = environment.getValue();
+        } else {
+            res = entity.getSpecificPropertyValue(getValue());
         }
 
-        return entity.getSpecificPropertyValue(getValue());
-        //todo - need to change the throws Exception after we throw the right exception in getSpecificPropertyValue
+        if(res != null) {
+            return res;
+        } else {
+            throw new PropertyNotFoundException("PropertyNotFoundException: " + getValue() + "was not found!" + " Problem occurred in class FloatPropertyExpression");
+        }
     }
 }

@@ -21,8 +21,7 @@ public class Decrease extends AbstractNumericAction {
     }
 
     @Override
-    public void Invoke(ActionContext context) throws Exception {
-        //todo - exception (change the throws type)
+    public void Invoke(ActionContext context) {
         AbstractPropertyInstance property = extractProperty(context);
         Number newPropertyValue = extractANumber(context);
 
@@ -48,7 +47,7 @@ public class Decrease extends AbstractNumericAction {
             property.setValue(newPropertyValue.toString());
         }
         else {
-            //todo - ask aviad
+            //todo - ask aviad: exception/change the value to maximun(ro minimum)
         }
     }
 }

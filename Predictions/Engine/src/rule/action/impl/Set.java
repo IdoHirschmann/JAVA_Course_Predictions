@@ -17,7 +17,7 @@ public class Set extends AbstractAction {
     }
 
     @Override
-    public void Invoke(ActionContext context) throws Exception {//todo
+    public void Invoke(ActionContext context) {
         context.getPrimaryEntityInstance().getProperty(property).setValue(value.GetExplicitValue(context.getPrimaryEntityInstance()));
     }
 }

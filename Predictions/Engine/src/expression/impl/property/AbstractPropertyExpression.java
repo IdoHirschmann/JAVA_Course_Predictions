@@ -16,6 +16,9 @@ public abstract class AbstractPropertyExpression extends AbstractExpression {
     public EnvironmentsSimulation getEnvironments() {
         return environments;
     }
+    public String GetSimpleValue() {
+        return getValue();
+    }
 
     public void setEnvironments(EnvironmentsSimulation environments) {
         this.environments = environments;

@@ -8,8 +8,11 @@ import simulation.api.EnvironmentsSimulation;
 import termination.Termination;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 public class Simulation implements EnvironmentsSimulation {
     //Need factory to this class?
@@ -18,7 +21,7 @@ public class Simulation implements EnvironmentsSimulation {
     private List<Rule> rules;
     private List<AbstractPropertyExpression> propertiesExpression;
     private Termination termination;
-    private LocalDate simulationStartTime;
+    private String formattedDate;
     private int identifyNumber;
 
     public Simulation(Map<String, EntityInstanceManager> entityManager, Map<String, AbstractPropertyInstance> environments, List<Rule> rules, List<AbstractPropertyExpression> propertiesExpression, Termination termination, int identifyNumber) {
@@ -28,7 +31,10 @@ public class Simulation implements EnvironmentsSimulation {
         this.propertiesExpression = propertiesExpression;
         this.termination = termination;
         this.identifyNumber = identifyNumber;
-        simulationStartTime = LocalDate.now();
+
+        LocalDateTime now = LocalDateTime.now();
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy | HH.mm.ss");
+        formattedDate = now.format(formatter);
     }
 
     public AbstractPropertyInstance getEnvironment(String environmentName) {
@@ -46,5 +52,18 @@ public class Simulation implements EnvironmentsSimulation {
 
     void setPropertiesExpressionForSpecificSim(){
         propertiesExpression.forEach(propertiesExpression -> propertiesExpression.setEnvironments(this));
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Simulation that = (Simulation) o;
+        return identifyNumber == that.identifyNumber;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(identifyNumber);
     }
 }

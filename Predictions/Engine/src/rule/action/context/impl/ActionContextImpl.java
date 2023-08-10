@@ -39,12 +39,6 @@ public class ActionContextImpl implements ActionContext {
 
     @Override
     public AbstractPropertyInstance getEnvironmentVariable(String name) {
-        AbstractPropertyInstance res = environmentVar.get(name);
-
-        if(res == null){
-            //todo- exception
-        }
-
-        return res;
+        return environmentVar.get(name);
     }
 }

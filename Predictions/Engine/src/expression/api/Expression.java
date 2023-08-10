@@ -5,6 +5,6 @@ import expression.ExpressionType;
 
 public interface Expression {
     String GetSimpleValue();
-    String GetExplicitValue(EntityInstance entity) throws Exception;
+    String GetExplicitValue(EntityInstance entity);
     public ExpressionType getType();
 }
