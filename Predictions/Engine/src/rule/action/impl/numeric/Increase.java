@@ -1,6 +1,7 @@
 package rule.action.impl.numeric;
 
 import entity.definition.EntityDefinition;
+import exception.TryToPreformFloatActionOnDecimalPropertyException;
 import expression.ExpressionType;
 import expression.api.Expression;
 import property.instance.AbstractPropertyInstance;
@@ -37,18 +38,11 @@ public class Increase extends AbstractNumericAction {
                 newPropertyValue = newPropertyValue.floatValue() + Float.parseFloat(by.GetExplicitValue(context.getPrimaryEntityInstance()));
             }
             else {
-                //todo - exception (try to reduce float from int property)
+                throw new TryToPreformFloatActionOnDecimalPropertyException("Float add on Decimal property is not allowed. Error occurred in"
+                        + this.getClass());
             }
         }
-        else {
-            //todo - exception (by is not number)
-        }
 
-        if(property.isInRange(newPropertyValue)) {
-            property.setValue(newPropertyValue.toString());
-        }
-        else {
-            //todo - ask aviad: exception/change the value to maximun(ro minimum)
-        }
+        property.setValue(checkIfActionResultIsInRange(newPropertyValue, property).toString());
     }
 }

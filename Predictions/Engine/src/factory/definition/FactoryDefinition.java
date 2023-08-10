@@ -9,6 +9,7 @@ import property.definition.PropertyDefinition;
 import property.definition.range.Range;
 import property.definition.value.PropertyDefinitionValue;
 import schema.generated.*;
+import termination.Termination;
 
 import java.util.*;
 
@@ -69,14 +70,16 @@ public abstract class FactoryDefinition {
         List<PRDProperty> PRDProperties = PRDEntity.getPRDProperties().getPRDProperty();
         Map<String, PropertyDefinition> properties = new HashMap<>();
         String duplicateName = FindDuplicateNamesForProp(PRDProperties);
+        int population = PRDEntity.getPRDPopulation();
 
         if(duplicateName != null) {
             throw new DuplicateNameException("DuplicateNameException: the property name '" + duplicateName + "' in entity '" + name + "' show more then once.\n" +
                     "Note that every property in a single entity must have a unique name! Problem occurred in class FactoryDefinition");
         }
+
         PRDProperties.forEach(prdProperty -> properties.put(prdProperty.getPRDName(),createPropertyDefinition(prdProperty)));
 
-        return new EntityDefinition(name, properties);
+        return new EntityDefinition(name, population ,properties);
     }
 
     public static Map<String, EntityDefinition> createEntitiesDefinition(PRDEntities prdEntities) {
@@ -127,6 +130,25 @@ public abstract class FactoryDefinition {
             return true;
         }
         return false;
+    }
+
+    public static Termination createTermination(PRDTermination prdTermination){
+        //todo- ask what are we doing if we dont get termination
+        //todo- ask if we get both secs and ticks - what is the inner order of them inside the list
+        int seconds = 0, ticks = 0;
+
+        if(prdTermination.getPRDByTicksOrPRDBySecond().size() == 1){
+            if(prdTermination.getPRDByTicksOrPRDBySecond().get(0) instanceof PRDBySecond){
+                seconds = ((PRDBySecond)prdTermination.getPRDByTicksOrPRDBySecond().get(0)).getCount();
+            }else {
+                ticks = ((PRDByTicks)prdTermination.getPRDByTicksOrPRDBySecond().get(0)).getCount();
+            }
+        }else {
+            //for now, we assume that ticks come before secs
+            ticks = ((PRDByTicks)prdTermination.getPRDByTicksOrPRDBySecond().get(0)).getCount();
+            seconds = ((PRDBySecond)prdTermination.getPRDByTicksOrPRDBySecond().get(1)).getCount();
+        }
+        return new Termination(ticks,seconds);
     }
 
     private static String FindDuplicateNamesForProp(List<PRDProperty> prdPropertyList) {

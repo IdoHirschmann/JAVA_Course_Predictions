@@ -1,6 +1,8 @@
 package rule.action.impl.numeric;
 
 import entity.definition.EntityDefinition;
+import exception.NotRealPropertyException;
+import exception.PropertyNotFoundException;
 import property.instance.AbstractPropertyInstance;
 import rule.action.ActionType;
 import rule.action.context.api.ActionContext;
@@ -9,7 +11,7 @@ import rule.action.impl.AbstractAction;
 import static utills.helperFunction.Helper.isDecimal;
 
 public abstract class AbstractNumericAction extends AbstractAction {
-    private String resultProp;
+    private final String resultProp;
 
     public AbstractNumericAction(EntityDefinition primaryEntityDefinition, ActionType type, String resultProp) {
         super(primaryEntityDefinition, type);
@@ -17,53 +19,43 @@ public abstract class AbstractNumericAction extends AbstractAction {
     }
 
     protected Number extractANumber(ActionContext context) {
-        AbstractPropertyInstance property = context.getEnvironmentVariable(resultProp);
+        AbstractPropertyInstance property = extractProperty(context);
         String propertyValue;
 
-        if(property == null) {
-            property = context.getPrimaryEntityInstance().getProperty(resultProp);
-        }
-
-        if(property != null) {
-            propertyValue = property.getValue();
-            if (IsANumber(property)) {
-
-                if(isDecimal(propertyValue)){
-                    return Integer.parseInt(propertyValue);
-                } else {
-                    return Float.parseFloat(propertyValue);
-                }
-
-            } else {
-                throw new RuntimeException();
-                //todo - exception (not a number)
-            }
-        }
-        else {
-            throw new RuntimeException();
-            //todo - exception (property not exist)
+        propertyValue = property.getValue();
+        if(isDecimal(propertyValue)){
+            return Integer.parseInt(propertyValue);
+        } else {
+            return Float.parseFloat(propertyValue);
         }
     }
-    //todo- ask aviad if the action that gets propeties - are these props always belong to the main entity instance
-    protected AbstractPropertyInstance extractProperty(ActionContext context) {
-        AbstractPropertyInstance res = context.getEnvironmentVariable(resultProp);
 
-        if(res == null) {
-            res = context.getPrimaryEntityInstance().getProperty(resultProp);
-        }
+    protected AbstractPropertyInstance extractProperty(ActionContext context) {
+        AbstractPropertyInstance res = context.getPrimaryEntityInstance().getProperty(resultProp);
 
         if(res != null) {
             return res;
         }
         else {
-            throw new RuntimeException();
-            //todo - exception (not existing property)
+            throw new NotRealPropertyException("NotRealPropertyException! The requested property" + resultProp + "does not exist. Occurred " + this.getClass());
         }
     }
 
-    protected Boolean IsANumber(AbstractPropertyInstance property) {
-        String propertyVal = property.getValue();
-        return propertyVal.matches("-?\\d+(\\.\\d+)?");
-        //todo - check if really work
+    protected Number checkIfActionResultIsInRange(Number result , AbstractPropertyInstance propertyInstance){
+        if(!(propertyInstance.isInRange(result))){
+            if(propertyInstance.getRange().getFrom() > result.doubleValue()){
+                result = propertyInstance.getRange().getFrom();
+            } else{
+                result = propertyInstance.getRange().getTo();
+            }
+        }
+        return result;
     }
+
+//    protected Boolean isANumber(AbstractPropertyInstance property) {
+//        String propertyVal = property.getValue();
+//        return propertyVal.matches("-?\\d+(\\.\\d+)?");
+//
+//    }
+
 }

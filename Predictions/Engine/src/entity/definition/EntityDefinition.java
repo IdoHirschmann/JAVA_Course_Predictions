@@ -7,10 +7,12 @@ import java.util.Map;
 public class EntityDefinition {
     private final String name;
     private Map<String, PropertyDefinition> properties;
+    private final int population;
 
-    public EntityDefinition(String name, Map<String, PropertyDefinition> properties) {
+    public EntityDefinition(String name,int population ,Map<String, PropertyDefinition> properties) {
         this.name = name;
         this.properties = properties;
+        this.population = population;
     }
 
     public String getName() {

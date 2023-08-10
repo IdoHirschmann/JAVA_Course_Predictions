@@ -3,6 +3,7 @@ package rule.action.impl.numeric.calculation;
 import entity.definition.EntityDefinition;
 import expression.ExpressionType;
 import expression.api.Expression;
+import property.instance.AbstractPropertyInstance;
 import rule.action.ActionType;
 import rule.action.context.api.ActionContext;
 
@@ -19,10 +20,9 @@ public class Divide extends AbstractCalculation {
         Number result;
 
         if((getSecondArgument().GetExplicitValue(context.getPrimaryEntityInstance()).equals("0"))) {
-            throw new RuntimeException(); //todo- change
+            throw new RuntimeException("Divide by zero is not allowed! Problem occurred while trying to active Divide method");
         }
 
-        //todo- ask aviad if in the creating of the actions will we already check the acutal value of the expressions so here well have them both as numbers
         if(getFirstArgument().getType() == ExpressionType.FLOAT || getSecondArgument().getType() == ExpressionType.FLOAT){
             result = convertStringToFloat(getFirstArgument().GetExplicitValue(context.getPrimaryEntityInstance())) /
                     convertStringToFloat(getSecondArgument().GetExplicitValue(context.getPrimaryEntityInstance()));
@@ -32,6 +32,8 @@ public class Divide extends AbstractCalculation {
                     convertStringToInt(getSecondArgument().GetExplicitValue(context.getPrimaryEntityInstance()));
         }
 
-        extractProperty(context).setValue(result.toString());
+        AbstractPropertyInstance propertyInstance = extractProperty(context);
+
+        propertyInstance.setValue(checkIfActionResultIsInRange(result,propertyInstance).toString());
     }
 }

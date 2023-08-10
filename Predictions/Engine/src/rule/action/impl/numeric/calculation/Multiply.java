@@ -3,6 +3,7 @@ package rule.action.impl.numeric.calculation;
 import entity.definition.EntityDefinition;
 import expression.ExpressionType;
 import expression.api.Expression;
+import property.instance.AbstractPropertyInstance;
 import rule.action.ActionType;
 import rule.action.context.api.ActionContext;
 
@@ -18,7 +19,6 @@ public class Multiply extends AbstractCalculation {
     public void Invoke(ActionContext context) {
         Number result;
 
-        //todo- ask aviad if in the creating of the actions will we already check the acutal value of the expressions so here well have them both as numbers
         if(getFirstArgument().getType() == ExpressionType.FLOAT || getSecondArgument().getType() == ExpressionType.FLOAT){
             result = convertStringToFloat(getFirstArgument().GetExplicitValue(context.getPrimaryEntityInstance())) *
                     convertStringToFloat(getSecondArgument().GetExplicitValue(context.getPrimaryEntityInstance()));
@@ -28,6 +28,8 @@ public class Multiply extends AbstractCalculation {
                     convertStringToInt(getSecondArgument().GetExplicitValue(context.getPrimaryEntityInstance()));
         }
 
-        extractProperty(context).setValue(result.toString());
+        AbstractPropertyInstance propertyInstance = extractProperty(context);
+
+        propertyInstance.setValue(checkIfActionResultIsInRange(result,propertyInstance).toString());
     }
 }
