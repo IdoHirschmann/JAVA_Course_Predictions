@@ -122,16 +122,6 @@ public abstract class FactoryDefinition {
         return res;
     }
 
-    private static boolean isInRange(double numberToCheck, Range range) {
-        if(range == null) {
-            return true;
-        }
-        if(numberToCheck >= range.getFrom() && numberToCheck <= range.getTo()) {
-            return true;
-        }
-        return false;
-    }
-
     public static Termination createTermination(PRDTermination prdTermination){
         //todo- ask what are we doing if we dont get termination
         //todo- ask if we get both secs and ticks - what is the inner order of them inside the list
@@ -140,7 +130,7 @@ public abstract class FactoryDefinition {
         if(prdTermination.getPRDByTicksOrPRDBySecond().size() == 1){
             if(prdTermination.getPRDByTicksOrPRDBySecond().get(0) instanceof PRDBySecond){
                 seconds = ((PRDBySecond)prdTermination.getPRDByTicksOrPRDBySecond().get(0)).getCount();
-            }else {
+            } else {
                 ticks = ((PRDByTicks)prdTermination.getPRDByTicksOrPRDBySecond().get(0)).getCount();
             }
         }else {
@@ -149,6 +139,16 @@ public abstract class FactoryDefinition {
             seconds = ((PRDBySecond)prdTermination.getPRDByTicksOrPRDBySecond().get(1)).getCount();
         }
         return new Termination(ticks,seconds);
+    }
+
+    private static boolean isInRange(double numberToCheck, Range range) {
+        if(range == null) {
+            return true;
+        }
+        if(numberToCheck >= range.getFrom() && numberToCheck <= range.getTo()) {
+            return true;
+        }
+        return false;
     }
 
     private static String FindDuplicateNamesForProp(List<PRDProperty> prdPropertyList) {

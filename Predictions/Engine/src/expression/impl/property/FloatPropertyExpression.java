@@ -13,19 +13,12 @@ public class FloatPropertyExpression extends AbstractPropertyExpression {
 
     @Override
     public String GetExplicitValue(EntityInstance entity) {
-        String res;
-        AbstractPropertyInstance environment = getEnvironments().getEnvironment(getValue());
-
-        if(environment != null) {
-            res = environment.getValue();
-        } else {
-            res = entity.getSpecificPropertyValue(getValue());
+        String res = entity.getSpecificPropertyValue(getValue());
+        if(res == null) {
+            throw new PropertyNotFoundException("PropertyNotFoundException: " + getValue() + "was not found! " +
+                    "Please make sure the property you enter to an action is in the right entity. Problem occurred in class FloatPropertyExpression");
         }
 
-        if(res != null) {
-            return res;
-        } else {
-            throw new PropertyNotFoundException("PropertyNotFoundException: " + getValue() + "was not found!" + " Problem occurred in class FloatPropertyExpression");
-        }
+        return res;
     }
 }

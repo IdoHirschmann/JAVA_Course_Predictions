@@ -11,6 +11,16 @@ public abstract class StringConvertor {
         }
     }
 
+    public static boolean isStringInt(String valueToCheck) {
+        try {
+            int ingore = Integer.parseInt(valueToCheck);
+            return true;
+        }
+        catch (NumberFormatException e) {
+            return false;
+        }
+    }
+
     public static float convertStringToFloat(String valueToConvert)
     {
         try {
@@ -18,6 +28,16 @@ public abstract class StringConvertor {
         }
         catch (NumberFormatException e) {
             throw new NumberFormatException( "Method ConvertStringToFloat failed! Problem " + e.getMessage() + ". Please enter float number. ");
+        }
+    }
+
+    public static boolean isStringFloat(String valueToCheck) {
+        try {
+            float ingore = Float.parseFloat(valueToCheck);
+            return true;
+        }
+        catch (NumberFormatException e) {
+            return false;
         }
     }
 
@@ -32,6 +52,15 @@ public abstract class StringConvertor {
         }
         else{
             return Boolean.parseBoolean(valueToConvert); //will not throw any ex because checked above completely
+        }
+    }
+
+    public static boolean isStringBoolean(String valueToCheck) {
+        if(valueToCheck.equals("true") || valueToCheck.equals("false")) {
+            return true;
+        }
+        else {
+            return false;
         }
     }
 }
