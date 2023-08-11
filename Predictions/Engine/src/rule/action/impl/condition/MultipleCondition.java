@@ -7,10 +7,11 @@ import rule.action.impl.AbstractAction;
 import rule.action.impl.condition.enums.LogicType;
 
 import java.util.List;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 public class MultipleCondition extends AbstractCondition {
-    private List<AbstractCondition> conditions;
-    private LogicType logic;
+    private final List<AbstractCondition> conditions;
+    private final LogicType logic;
 
     public MultipleCondition(EntityDefinition primaryEntityDefinition, List<AbstractAction> then, List<AbstractAction> elsE, List<AbstractCondition> conditions, LogicType logic) {
         super(primaryEntityDefinition, ActionType.MULTIPLE_CONDITION, then, elsE);
@@ -20,12 +21,33 @@ public class MultipleCondition extends AbstractCondition {
 
     @Override
     protected boolean runCondition(ActionContext context) {
-        return false;
-        //todo
+        switch (logic){
+            case OR:
+                return runOrCondition(context);
+            case AND:
+                return runAndCondition(context);
+            default:
+                return false;
+        }
     }
 
-    @Override
-    public void Invoke(ActionContext context) {
-        //todo - remember: the property can be property in the entityInstance or environment!!
+    private boolean runAndCondition(ActionContext context) {
+        for (AbstractCondition condition: conditions) {
+            if (!condition.runCondition(context)){
+                return false;
+            }
+        }
+        return true;
     }
+
+    private boolean runOrCondition(ActionContext context) {
+
+        for (AbstractCondition condition: conditions) {
+            if (condition.runCondition(context)){
+                return true;
+            }
+        }
+        return false;
+    }
+
 }

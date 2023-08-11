@@ -1,4 +1,5 @@
 package property.instance.impl;
+import property.definition.PropertyType;
 import property.definition.range.Range;
 import property.instance.AbstractPropertyInstance;
 
@@ -11,6 +12,12 @@ public class DecimalPropertyInstance extends AbstractPropertyInstance {
         super(name,range);
         this.value = value;
     }
+
+    @Override
+    public PropertyType getType() {
+        return PropertyType.DECIMAL;
+    }
+
     @Override
     public String getValue() {
         return Integer.toString(value);

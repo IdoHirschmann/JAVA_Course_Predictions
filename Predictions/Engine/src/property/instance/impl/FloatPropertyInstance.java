@@ -1,5 +1,6 @@
 package property.instance.impl;
 
+import property.definition.PropertyType;
 import property.definition.range.Range;
 import property.instance.AbstractPropertyInstance;
 
@@ -11,6 +12,11 @@ public class FloatPropertyInstance extends AbstractPropertyInstance {
     public FloatPropertyInstance(String name, Range range, float value){
         super(name,range);
         this.value = value;
+    }
+
+    @Override
+    public PropertyType getType() {
+        return PropertyType.FLOAT;
     }
 
     @Override

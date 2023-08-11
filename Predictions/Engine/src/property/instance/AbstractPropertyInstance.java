@@ -1,10 +1,12 @@
 package property.instance;
 
+import property.definition.PropertyType;
 import property.definition.range.Range;
 
 public abstract class AbstractPropertyInstance {
     private final String name;
     private final Range range;
+
 
     public AbstractPropertyInstance(String name) {
         this.name = name;
@@ -14,6 +16,8 @@ public abstract class AbstractPropertyInstance {
     public Range getRange() {
         return range;
     }
+
+    public abstract PropertyType getType();
 
     public AbstractPropertyInstance(String name, Range range) {
         this.name = name;

@@ -23,7 +23,7 @@ import static utills.string.StringConvertor.*;
 public abstract class ExpressionCreator {
     private static Map<String, PropertyDefinition> propertiesOfEntities;
     private static Map<String,PropertyDefinition> environmentsDefinition;
-    //todo - need in every file we load to update this maps before creating the exception from the file and after we created the entityDefinition and environmentsDefinition from the file!
+    //todo - need in every file we load to update this maps before creating the expression from the file and after we created the entityDefinition and environmentsDefinition from the file!
 
 
     public static Expression createExpression(String input) {

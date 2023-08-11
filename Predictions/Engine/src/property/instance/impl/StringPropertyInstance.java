@@ -32,6 +32,11 @@ public class StringPropertyInstance extends AbstractPropertyInstance {
     } //todo - might not be here in the end
 
     @Override
+    public PropertyType getType() {
+        return PropertyType.STRING;
+    }
+
+    @Override
     public String getValue() {
         return value;
     }

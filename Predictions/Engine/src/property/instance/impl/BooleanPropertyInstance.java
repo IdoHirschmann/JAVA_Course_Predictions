@@ -1,5 +1,6 @@
 package property.instance.impl;
 
+import property.definition.PropertyType;
 import property.instance.AbstractPropertyInstance;
 
 import static utills.string.StringConvertor.convertStringToBool;
@@ -10,6 +11,11 @@ public class BooleanPropertyInstance extends AbstractPropertyInstance {
     public BooleanPropertyInstance(boolean value , String name) {
         super(name);
         this.value = value;
+    }
+
+    @Override
+    public PropertyType getType() {
+        return PropertyType.BOOLEAN;
     }
 
     @Override

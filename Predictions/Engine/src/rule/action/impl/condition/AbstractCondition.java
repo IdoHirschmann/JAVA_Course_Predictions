@@ -9,22 +9,35 @@ import rule.action.impl.AbstractAction;
 import java.util.List;
 
 public abstract class AbstractCondition extends AbstractAction {
-    private List<AbstractAction> then;
-    private List<AbstractAction> elsE;
+    private List<AbstractAction> Then;
+    private List<AbstractAction> Else;
 
-    public AbstractCondition(EntityDefinition primaryEntityDefinition, ActionType type, List<AbstractAction> then, List<AbstractAction> elsE) {
+    public AbstractCondition(EntityDefinition primaryEntityDefinition, ActionType type, List<AbstractAction> Then, List<AbstractAction> Else) {
         super(primaryEntityDefinition, type);
-        this.then = then;
-        this.elsE = elsE;
+        this.Then = Then;
+        this.Else = Else;
     }
 
-    private void InvokeThen(ActionContext context) {
-        then.forEach(action -> action.Invoke(context));
+    protected void invokeThen(ActionContext context) {
+        if (Then != null) {
+            Then.forEach(action -> action.Invoke(context));
+        }
     }
 
-    private void InvokeElsE(ActionContext context) {
-        elsE.forEach(action -> action.Invoke(context));
+    protected void invokeElse(ActionContext context) {
+        if (Else != null) {
+            Else.forEach(action -> action.Invoke(context));
+        }
     }
 
     protected abstract boolean runCondition(ActionContext context);
+
+    @Override
+    public void Invoke(ActionContext context) {
+        if(runCondition(context)){
+            invokeThen(context);
+        }else {
+            invokeElse(context);
+        }
+    }
 }
