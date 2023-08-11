@@ -69,12 +69,16 @@ public abstract class ExpressionCreator {
             return null;
         }
 
-        return switch (propertyDef.getType()) {
-            case DECIMAL -> new DecimalPropertyExpression(input);
-            case FLOAT -> new FloatPropertyExpression(input);
-            case BOOLEAN -> new BooleanPropertyExpression(input);
-            default -> new StringPropertyExpression(input);
-        };
+        switch (propertyDef.getType()) {
+            case DECIMAL:
+                return new DecimalPropertyExpression(input);
+            case FLOAT:
+                return new FloatPropertyExpression(input);
+            case BOOLEAN:
+                return new BooleanPropertyExpression(input);
+            default:
+                return new StringPropertyExpression(input);
+        }
     }
 
     private static Expression createValueExpression(String input) {
