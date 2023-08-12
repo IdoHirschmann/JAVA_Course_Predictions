@@ -1,5 +1,6 @@
 package rule;
 
+import rule.action.api.Action;
 import rule.action.context.api.ActionContext;
 import rule.action.impl.AbstractAction;
 import rule.activation.Activation;
@@ -10,9 +11,9 @@ import java.util.Random;
 public class Rule {
     private String name;
     private Activation activation;
-    private List<AbstractAction> actions;
+    private List<Action> actions;
 
-    public Rule(String name, Activation activation, List<AbstractAction> actions) {
+    public Rule(String name, Activation activation, List<Action> actions) {
         this.name = name;
         this.activation = activation;
         this.actions = actions;

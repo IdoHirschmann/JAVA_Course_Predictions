@@ -10,18 +10,15 @@ import java.util.List;
 import java.util.Map;
 
 public class SimulationDefinition {
-    //Need factory to this class?
     private final Map<String, EntityDefinition> entitiesDef;
     private final Map<String, PropertyDefinition> environmentsDef;
     private final List<Rule> rules;
-    private final AbstractPropertyExpression propertyExpression;
     private final Termination termination;
 
-    public SimulationDefinition(Map<String, EntityDefinition> entitiesDef, Map<String, PropertyDefinition> environmentsDef, List<Rule> rules,AbstractPropertyExpression propertyExpression, Termination termination) {
+    public SimulationDefinition(Map<String, EntityDefinition> entitiesDef, Map<String, PropertyDefinition> environmentsDef, List<Rule> rules, Termination termination) {
         this.entitiesDef = entitiesDef;
         this.environmentsDef = environmentsDef;
         this.rules = rules;
-        this.propertyExpression= propertyExpression;
         this.termination = termination;
     }
 
@@ -35,10 +32,6 @@ public class SimulationDefinition {
 
     public List<Rule> getRules() {
         return rules;
-    }
-
-    public AbstractPropertyExpression getPropertyExpression() {
-        return propertyExpression;
     }
 
     public Termination getTermination() {

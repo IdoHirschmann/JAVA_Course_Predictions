@@ -8,12 +8,28 @@ import jdk.internal.org.objectweb.asm.tree.analysis.Value;
 import property.definition.PropertyDefinition;
 import property.definition.range.Range;
 import property.definition.value.PropertyDefinitionValue;
+import rule.Rule;
+import rule.action.api.Action;
+import rule.activation.Activation;
 import schema.generated.*;
+import simulation.definition.SimulationDefinition;
 import termination.Termination;
 
 import java.util.*;
 
+import static factory.action.ActionCreator.createAction;
+
 public abstract class FactoryDefinition {
+
+    public static SimulationDefinition createSimulationDefinition(PRDWorld prdWorld) {
+        Map<String, EntityDefinition> entityDefinitionMap = createEntitiesDefinition(prdWorld.getPRDEntities());
+        Map<String, PropertyDefinition> environmentsMap = createEnvironments(prdWorld.getPRDEvironment());
+        List<Rule> ruleList = createRules(prdWorld.getPRDRules());
+        Termination termination = createTermination(prdWorld.getPRDTermination());
+
+        return new SimulationDefinition(entityDefinitionMap, environmentsMap, ruleList, termination);
+    }
+
     private static PropertyDefinition createPropertyDefinition(PRDProperty prdProperty) {
         Range range = new Range(prdProperty.getPRDRange().getFrom(), prdProperty.getPRDRange().getTo());
         PropertyDefinitionValue value = new PropertyDefinitionValue(prdProperty.getPRDValue().isRandomInitialize(),prdProperty.getPRDValue().getInit());
@@ -82,7 +98,7 @@ public abstract class FactoryDefinition {
         return new EntityDefinition(name, population ,properties);
     }
 
-    public static Map<String, EntityDefinition> createEntitiesDefinition(PRDEntities prdEntities) {
+    private static Map<String, EntityDefinition> createEntitiesDefinition(PRDEntities prdEntities) {
         Map<String, EntityDefinition> res = new HashMap<>();
         List<PRDEntity> prdEntityList = prdEntities.getPRDEntity();
         String duplicateName = FindDuplicateNamesForEnt(prdEntityList);
@@ -108,7 +124,7 @@ public abstract class FactoryDefinition {
         return new PropertyDefinition(name, type, null, range);
     }
 
-    public static Map<String, PropertyDefinition> createEnvironments(PRDEvironment prdEnvironment) {
+    private static Map<String, PropertyDefinition> createEnvironments(PRDEvironment prdEnvironment) {
         Map<String, PropertyDefinition> res = new HashMap<>();
         List<PRDEnvProperty> prdEnvironmentList = prdEnvironment.getPRDEnvProperty();
         String duplicateName = FindDuplicateNamesForEnvironment(prdEnvironmentList);
@@ -122,7 +138,38 @@ public abstract class FactoryDefinition {
         return res;
     }
 
-    public static Termination createTermination(PRDTermination prdTermination){
+    private static List<Action> createActions(PRDActions prdActions) {
+        List<Action> res = new ArrayList<>();
+        List<PRDAction> actionList = prdActions.getPRDAction();
+
+        for (PRDAction prdAction : actionList) {
+            res.add(createAction(prdAction));
+        }
+        return res;
+    }
+
+    private static Activation createActivation(PRDActivation prdActivation) {
+        return new Activation(prdActivation.getTicks(), prdActivation.getProbability());
+    }
+
+    private static Rule createRule(PRDRule prdRule) {
+        Activation activation = createActivation(prdRule.getPRDActivation());
+        List<Action> actionList = createActions(prdRule.getPRDActions());
+
+        return new Rule(prdRule.getName(), activation, actionList);
+    }
+
+    private static List<Rule> createRules(PRDRules prdRules) {
+        List<Rule> res = new ArrayList<>();
+        List<PRDRule> rulesList = prdRules.getPRDRule();
+
+        for (PRDRule prdRule : rulesList) {
+            res.add(createRule(prdRule));
+        }
+        return res;
+    }
+
+    private static Termination createTermination(PRDTermination prdTermination){
         int seconds = 0, ticks = 0;
 
         if(prdTermination.getPRDByTicksOrPRDBySecond().size() == 1) {

@@ -2,14 +2,14 @@ package rule.activation;
 
 public class Activation {
     private final int ticks;
-    private final float probabilty;
+    private final double probabilty;
 
-    public Activation(int ticks, float probabilty) {
+    public Activation(int ticks, double probabilty) {
         this.ticks = ticks;
         this.probabilty = probabilty;
     }
 
-    public float getProbabilty() {
+    public double getProbabilty() {
         return probabilty;
     }
 

@@ -131,7 +131,7 @@ public abstract class ExpressionCreator {
         PropertyDefinition environmentDef = environmentsDefinition.get(environmentInput);
 
         if(environmentDef == null) {
-            throw  new EnvironmentInputException("EnvironmentInputException: the following input "+ environmentInput +"is not a valid input to function environment.\n" +
+            throw  new EnvironmentInputException("EnvironmentInputException: the following input '" + environmentInput + "' is not a valid input to function environment.\n" +
                     "Note that environment has to get a single environment's name! Problem occurred in class ExpressionCreator");
         }
     }
