@@ -19,4 +19,7 @@ public class EntityDefinition {
         return name;
     }
 
+    public PropertyDefinition getProperty(String propName) {
+        return properties.get(propName);
+    }
 }

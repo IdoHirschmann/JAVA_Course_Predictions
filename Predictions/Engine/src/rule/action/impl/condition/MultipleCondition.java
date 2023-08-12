@@ -2,6 +2,7 @@ package rule.action.impl.condition;
 
 import entity.definition.EntityDefinition;
 import rule.action.ActionType;
+import rule.action.api.Action;
 import rule.action.context.api.ActionContext;
 import rule.action.impl.AbstractAction;
 import rule.action.impl.condition.enums.LogicType;
@@ -13,7 +14,7 @@ public class MultipleCondition extends AbstractCondition {
     private final List<AbstractCondition> conditions;
     private final LogicType logic;
 
-    public MultipleCondition(EntityDefinition primaryEntityDefinition, List<AbstractAction> then, List<AbstractAction> elsE, List<AbstractCondition> conditions, LogicType logic) {
+    public MultipleCondition(EntityDefinition primaryEntityDefinition, List<Action> then, List<Action> elsE, List<AbstractCondition> conditions, LogicType logic) {
         super(primaryEntityDefinition, ActionType.MULTIPLE_CONDITION, then, elsE);
         this.conditions = conditions;
         this.logic = logic;

@@ -21,8 +21,7 @@ public abstract class StringConvertor {
         }
     }
 
-    public static float convertStringToFloat(String valueToConvert)
-    {
+    public static float convertStringToFloat(String valueToConvert) {
         try {
             return Float.parseFloat(valueToConvert);
         }

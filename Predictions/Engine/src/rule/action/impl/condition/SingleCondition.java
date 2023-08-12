@@ -5,6 +5,7 @@ import expression.ExpressionType;
 import expression.api.Expression;
 import property.definition.PropertyType;
 import rule.action.ActionType;
+import rule.action.api.Action;
 import rule.action.context.api.ActionContext;
 import rule.action.impl.AbstractAction;
 import rule.action.impl.condition.enums.OperatorType;
@@ -19,7 +20,7 @@ public class SingleCondition extends AbstractCondition {
     private Expression value;
     private OperatorType operator;
 
-    public SingleCondition(EntityDefinition primaryEntityDefinition, List<AbstractAction> then, List<AbstractAction> elsE, String property, Expression value, OperatorType operator) {
+    public SingleCondition(EntityDefinition primaryEntityDefinition, List<Action> then, List<Action> elsE, String property, Expression value, OperatorType operator) {
         super(primaryEntityDefinition, ActionType.SINGLE_CONDITION, then, elsE);
         this.property = property;
         this.value = value;

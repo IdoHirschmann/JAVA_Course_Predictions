@@ -3,16 +3,17 @@ package rule.action.impl.condition;
 
 import entity.definition.EntityDefinition;
 import rule.action.ActionType;
+import rule.action.api.Action;
 import rule.action.context.api.ActionContext;
 import rule.action.impl.AbstractAction;
 
 import java.util.List;
 
 public abstract class AbstractCondition extends AbstractAction {
-    private List<AbstractAction> Then;
-    private List<AbstractAction> Else;
+    private List<Action> Then;
+    private List<Action> Else;
 
-    public AbstractCondition(EntityDefinition primaryEntityDefinition, ActionType type, List<AbstractAction> Then, List<AbstractAction> Else) {
+    public AbstractCondition(EntityDefinition primaryEntityDefinition, ActionType type, List<Action> Then, List<Action> Else) {
         super(primaryEntityDefinition, type);
         this.Then = Then;
         this.Else = Else;
