@@ -1,7 +1,10 @@
 package rule.action.impl;
 
 import entity.definition.EntityDefinition;
+import exception.TypeUnmatchedException;
+import expression.ExpressionType;
 import expression.api.Expression;
+import property.definition.PropertyType;
 import rule.action.ActionType;
 import rule.action.context.api.ActionContext;
 import rule.action.impl.AbstractAction;
@@ -18,6 +21,32 @@ public class Set extends AbstractAction {
 
     @Override
     public void Invoke(ActionContext context) {
-        context.getPrimaryEntityInstance().getProperty(property).setValue(value.GetExplicitValue(context.getPrimaryEntityInstance()));
+        PropertyType propertyType = context.getPrimaryEntityInstance().getProperty(property).getType();
+        ExpressionType valueType = value.getType();
+
+        if(propertyType == PropertyType.DECIMAL && valueType == ExpressionType.INT) {
+            context.getPrimaryEntityInstance().getProperty(property).setValue(value.GetExplicitValue(context.getPrimaryEntityInstance()));
+            return;
+        }
+        if(propertyType == PropertyType.FLOAT && (valueType == ExpressionType.INT || valueType == ExpressionType.FLOAT)) {
+            context.getPrimaryEntityInstance().getProperty(property).setValue(value.GetExplicitValue(context.getPrimaryEntityInstance()));
+            return;
+        }
+        if(propertyType == PropertyType.BOOLEAN && valueType == ExpressionType.BOOLEAN) {
+            context.getPrimaryEntityInstance().getProperty(property).setValue(value.GetExplicitValue(context.getPrimaryEntityInstance()));
+            return;
+        }
+        if(propertyType == PropertyType.STRING && valueType == ExpressionType.STRING) {
+            context.getPrimaryEntityInstance().getProperty(property).setValue(value.GetExplicitValue(context.getPrimaryEntityInstance()));
+            return;
+        }
+        if(propertyType == PropertyType.DECIMAL && valueType == ExpressionType.FLOAT) {
+            throw new TypeUnmatchedException("TypeUnmatchedException: can not set the property '" + property + "' with expression: " + value.GetSimpleValue() + ".\n" +
+                    "Note that you can not set a decimal property with float expression. Problem occurred in class Set when trying to do set action");
+        }
+
+        throw new TypeUnmatchedException("TypeUnmatchedException: can not set the property '" + property + "' with expression: " + value.GetSimpleValue() + ".\n" +
+                "Note that you need to match the property type and expression type to be able to set them. Problem occurred in class Set when trying to do set action");
+
     }
 }

@@ -122,7 +122,8 @@ public abstract class FactoryDefinition {
         Range range = new Range(prdEnvProperty.getPRDRange().getFrom(), prdEnvProperty.getPRDRange().getTo());
 
         if(!type.equals("decimal") && !type.equals("boolean") && !type.equals("float") && !type.equals("string")) {
-            throw new PropertyTypeException("PropertyTypeException: " + name + " type is not valid!" + " Problem occurred in class FactoryDefinition");
+            throw new PropertyTypeException("PropertyTypeException: " + name + " type is not valid!\n" +
+                    "Note that environment type must be: 'decimal', 'boolean', 'float' or 'string'. Problem occurred in class FactoryDefinition");
         }
 
         return new PropertyDefinition(name, type, null, range);

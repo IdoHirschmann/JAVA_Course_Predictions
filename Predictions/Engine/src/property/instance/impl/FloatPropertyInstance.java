@@ -7,9 +7,9 @@ import property.instance.AbstractPropertyInstance;
 import static utills.string.StringConvertor.convertStringToFloat;
 
 public class FloatPropertyInstance extends AbstractPropertyInstance {
-    private  float value;
+    private  Float value;
 
-    public FloatPropertyInstance(String name, Range range, float value){
+    public FloatPropertyInstance(String name, Range range, Float value){
         super(name,range);
         this.value = value;
     }

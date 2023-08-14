@@ -1,4 +1,7 @@
 import manager.PredictionManager;
+import simulation.impl.Simulation;
+
+import static factory.instance.FactoryInstance.createSimulation;
 
 public class TesterMain {
     public static void main(String[] args) {
@@ -10,5 +13,7 @@ public class TesterMain {
         } catch (Exception exception) {
             System.out.println(exception);
         }
+
+        Simulation simulation = createSimulation(predictionManager.getSimulationDefinition(), 0);
     }
 }

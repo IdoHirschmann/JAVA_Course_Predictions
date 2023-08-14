@@ -9,6 +9,10 @@ import java.util.Objects;
 public class EntityInstance {
     private Map<String, AbstractPropertyInstance> properties;
 
+    public EntityInstance(Map<String, AbstractPropertyInstance> properties) {
+        this.properties = properties;
+    }
+
     public AbstractPropertyInstance getProperty(String propertyName) {
         return properties.get(propertyName);
     }

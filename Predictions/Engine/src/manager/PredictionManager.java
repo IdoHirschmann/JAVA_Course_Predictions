@@ -23,4 +23,8 @@ public class PredictionManager {
         //todo - need to change the input to DTO (the string its just for testing)
         simulationDefinition = xmlLoader.loadXmlData(filePath);
     }
+
+    public SimulationDefinition getSimulationDefinition() {
+        return simulationDefinition;
+    }
 }

@@ -188,8 +188,6 @@ public abstract class ActionCreator {
 
         Expression value = createExpression(prdAction.getValue());
 
-        checkIsTypeMatch(propertyDef, value);
-
         return new Set(entityDef, propertyDef.getName(), value);
     }
 
@@ -278,30 +276,6 @@ public abstract class ActionCreator {
         }
 
         return res;
-    }
-    private static void checkIsTypeMatch(PropertyDefinition propertyDef, Expression value) {
-        PropertyType propertyType = propertyDef.getType();
-        ExpressionType valueType = value.getType();
-
-        if(propertyType == PropertyType.DECIMAL && valueType == ExpressionType.INT) {
-            return;
-        }
-        if(propertyType == PropertyType.FLOAT && (valueType == ExpressionType.INT || valueType == ExpressionType.INT)) {
-            return;
-        }
-        if(propertyType == PropertyType.BOOLEAN && valueType == ExpressionType.BOOLEAN) {
-            return;
-        }
-        if(propertyType == PropertyType.STRING && valueType == ExpressionType.STRING) {
-            return;
-        }
-        if(propertyType == PropertyType.DECIMAL && valueType == ExpressionType.FLOAT) {
-            throw new TypeUnmatchedException("TypeUnmatchedException: can not set the property '" + propertyDef.getName() + "' with expression: " + value.GetSimpleValue() + ".\n" +
-                    "Note that you can not set a decimal property with float expression. Problem occurred in class ActionCreator when trying to create set action");
-        }
-
-        throw new TypeUnmatchedException("TypeUnmatchedException: can not set the property '" + propertyDef.getName() + "' with expression: " + value.GetSimpleValue() + ".\n" +
-                "Note that you need to match the property type and expression type to be able to set them. Problem occurred in class ActionCreator when trying to create set action");
     }
 
 }

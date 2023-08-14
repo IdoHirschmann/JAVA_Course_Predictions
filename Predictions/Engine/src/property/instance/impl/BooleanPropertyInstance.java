@@ -6,9 +6,9 @@ import property.instance.AbstractPropertyInstance;
 import static utills.string.StringConvertor.convertStringToBool;
 
 public class BooleanPropertyInstance extends AbstractPropertyInstance {
-    private boolean value;
+    private Boolean value;
 
-    public BooleanPropertyInstance(boolean value , String name) {
+    public BooleanPropertyInstance(Boolean value , String name) {
         super(name);
         this.value = value;
     }

@@ -6,9 +6,9 @@ import property.instance.AbstractPropertyInstance;
 import static utills.string.StringConvertor.convertStringToInt;
 
 public class DecimalPropertyInstance extends AbstractPropertyInstance {
-    private int value;
+    private Integer value;
 
-    public DecimalPropertyInstance(String name, Range range, int value){
+    public DecimalPropertyInstance(String name, Range range, Integer value){
         super(name,range);
         this.value = value;
     }
