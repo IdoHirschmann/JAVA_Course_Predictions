@@ -22,7 +22,7 @@ import static utills.string.StringConvertor.*;
 
 public abstract class ExpressionCreator {
     private static Map<String, PropertyDefinition> propertiesOfEntities;
-    private static Map<String,PropertyDefinition> environmentsDefinition;
+    private static Map<String, PropertyDefinition> environmentsDefinition;
     //todo - need in every file we load to update this maps before creating the expression from the file and after we created the entityDefinition and environmentsDefinition from the file!
 
 
@@ -51,7 +51,7 @@ public abstract class ExpressionCreator {
             return new RandomFunctionExpression(input,randomArg);
         }
         else if (input.startsWith("environment(") && input.endsWith(")")) {
-            String environmentInput = input.substring(13, input.length() - 1);
+            String environmentInput = input.substring(12, input.length() - 1);
             isAnEnvironment(environmentInput); // function that will throw exception if not!
             ExpressionType type = getEnvironmentExpressionType(environmentInput);
 

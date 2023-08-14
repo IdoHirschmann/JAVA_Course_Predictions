@@ -26,9 +26,8 @@ import java.util.Map;
 
 import static factory.expression.ExpressionCreator.createExpression;
 
-public class ActionCreator {
+public abstract class ActionCreator {
     private static Map<String, EntityDefinition> entityDefinitionMap;
-    //todo - set the map after finishing creating the entitiesDefinitions
 
     public static Action createAction(PRDAction prdAction) {
         String type = prdAction.getType();
@@ -149,11 +148,13 @@ public class ActionCreator {
         List<Action> Else = null;
         List<Action> Then = null;
         if(prdAction != null) {
-            PRDElse prdElse = prdAction.getPRDElse();
-            Else = extractActionListFromPRD(prdElse.getPRDAction());
-
             PRDThen prdThen = prdAction.getPRDThen();
             Then = extractActionListFromPRD(prdThen.getPRDAction());
+
+            PRDElse prdElse = prdAction.getPRDElse();
+            if(prdElse != null) {
+                Else = extractActionListFromPRD(prdElse.getPRDAction());
+            }
         }
 
         return new SingleCondition(entityDef, Then, Else, propertyDef.getName(), value, operatorType);
@@ -166,11 +167,13 @@ public class ActionCreator {
         List<Action> Else = null;
         List<Action> Then = null;
         if(prdAction != null) {
-            PRDElse prdElse = prdAction.getPRDElse();
-            Else = extractActionListFromPRD(prdElse.getPRDAction());
-
             PRDThen prdThen = prdAction.getPRDThen();
             Then = extractActionListFromPRD(prdThen.getPRDAction());
+
+            PRDElse prdElse = prdAction.getPRDElse();
+            if(prdElse!= null){
+                Else = extractActionListFromPRD(prdElse.getPRDAction());
+            }
         }
 
         return new MultipleCondition(entityDef, Then, Else, conditionList, logicType);

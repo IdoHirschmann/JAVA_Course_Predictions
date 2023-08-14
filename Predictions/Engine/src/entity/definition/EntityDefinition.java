@@ -22,4 +22,8 @@ public class EntityDefinition {
     public PropertyDefinition getProperty(String propName) {
         return properties.get(propName);
     }
+
+    public Map<String, PropertyDefinition> getProperties() {
+        return properties;
+    }
 }

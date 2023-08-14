@@ -4,6 +4,8 @@ import entity.definition.EntityDefinition;
 import exception.DuplicateNameException;
 import exception.NumberNotInRangeException;
 import exception.PropertyTypeException;
+import factory.action.ActionCreator;
+import factory.expression.ExpressionCreator;
 import jdk.internal.org.objectweb.asm.tree.analysis.Value;
 import property.definition.PropertyDefinition;
 import property.definition.range.Range;
@@ -109,6 +111,8 @@ public abstract class FactoryDefinition {
         }
         prdEntityList.forEach(prdEntity -> res.put(prdEntity.getName(), createEntityDefinition(prdEntity)));
 
+        ActionCreator.setEntityDefinitionMap(res);
+        ExpressionCreator.setPropertiesOfEntities(createPropOfEntitiesMap(res));
         return res;
     }
 
@@ -135,6 +139,7 @@ public abstract class FactoryDefinition {
         }
         prdEnvironmentList.forEach(prdEnvProperty -> res.put(prdEnvProperty.getPRDName(),createEnvironmentPropDefinition(prdEnvProperty)));
 
+        ExpressionCreator.setEnvironmentsDefinition(res);
         return res;
     }
 
@@ -149,7 +154,15 @@ public abstract class FactoryDefinition {
     }
 
     private static Activation createActivation(PRDActivation prdActivation) {
-        return new Activation(prdActivation.getTicks(), prdActivation.getProbability());
+        if(prdActivation != null) {
+            Integer ticks = prdActivation.getTicks();
+            Double probability = prdActivation.getProbability();
+            return new Activation(ticks, probability);
+        }
+        else {
+            return new Activation();
+        }
+
     }
 
     private static Rule createRule(PRDRule prdRule) {
@@ -242,5 +255,14 @@ public abstract class FactoryDefinition {
         }
 
         return null;
+    }
+
+    private static Map<String, PropertyDefinition> createPropOfEntitiesMap(Map<String, EntityDefinition> entityDefinitionMap) {
+        Map<String, PropertyDefinition> res = new HashMap<>();
+
+        for (Map.Entry<String, EntityDefinition> entry : entityDefinitionMap.entrySet()) {
+            entry.getValue().getProperties().forEach((s, propertyDefinition) -> res.put(s,propertyDefinition));
+        }
+        return res;
     }
 }
