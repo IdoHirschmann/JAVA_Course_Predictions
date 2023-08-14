@@ -46,8 +46,8 @@ public abstract class ActionCreator {
             case "kill":
                 return createKill(prdAction);
             default:
-                //todo - exception (type invalid exception)
-                return null;
+                throw new TypeUnmatchedException("TypeUnmatchedException: can not create action with type '" + type +"'.\n" +
+                        "Please enter a real action type. Problem occurred in class ActionCreator.");
         }
     }
 
