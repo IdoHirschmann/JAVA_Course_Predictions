@@ -140,10 +140,6 @@ public abstract class ActionCreator {
         Expression value = createExpression(prdCondition.getValue());
 
         OperatorType operatorType = getOperatorFromString(prdCondition.getOperator());
-        if(operatorType == OperatorType.BT || operatorType == OperatorType.LT) {
-            checkIfNumberProperty(propertyDef,"single-condition");
-            checkIfNumberExpression(value,"single-condition");
-        }
 
         List<Action> Else = null;
         List<Action> Then = null;

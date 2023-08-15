@@ -33,7 +33,7 @@ public class Simulation implements EnvironmentsSimulation {
         this.identifyNumber = identifyNumber;
 
         LocalDateTime now = LocalDateTime.now();
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy | HH.mm.ss");
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy | HH:mm:ss");
         formattedDate = now.format(formatter);
     }
 

@@ -1,8 +1,11 @@
 package rule.action.impl.condition;
 
 import entity.definition.EntityDefinition;
+import exception.ExpressionTypeException;
+import exception.PropertyTypeException;
 import expression.ExpressionType;
 import expression.api.Expression;
+import property.definition.PropertyDefinition;
 import property.definition.PropertyType;
 import rule.action.ActionType;
 import rule.action.api.Action;
@@ -12,7 +15,6 @@ import rule.action.impl.condition.enums.OperatorType;
 
 import java.util.List;
 
-import static utills.string.StringConvertor.convertStringToBool;
 import static utills.string.StringConvertor.convertStringToFloat;
 
 public class SingleCondition extends AbstractCondition {
@@ -42,12 +44,16 @@ public class SingleCondition extends AbstractCondition {
     }
 
     private boolean ltCondition(ActionContext context) {
+        checkIfNumberExpression();
+        checkIfNumberProperty(context);
         float propVal = convertStringToFloat(context.getPrimaryEntityInstance().getSpecificPropertyValue(property));
         float expVal = convertStringToFloat(value.GetExplicitValue(context.getPrimaryEntityInstance()));
 
         return propVal < expVal;
     }
     private boolean btCondition(ActionContext context) {
+        checkIfNumberExpression();
+        checkIfNumberProperty(context);
         float propVal = convertStringToFloat(context.getPrimaryEntityInstance().getSpecificPropertyValue(property));
         float expVal = convertStringToFloat(value.GetExplicitValue(context.getPrimaryEntityInstance()));
 
@@ -87,5 +93,18 @@ public class SingleCondition extends AbstractCondition {
     }
     private boolean isAStringExp(){
         return value.getType() == ExpressionType.STRING;
+    }
+
+    private void checkIfNumberProperty(ActionContext context) {
+        if(!isANumberProp(context)) {
+            throw new PropertyTypeException("PropertyTypeException: the property '" + property + "is not a numeric property!\n" +
+                    "Note that lt/bt operators in single-condition action has to get numeric arguments. Problem occurred in class SingleCondition when trying to run single-condition action");
+        }
+    }
+    private void checkIfNumberExpression() {
+        if(!isANumberExp()) {
+            throw new ExpressionTypeException("ExpressionTypeException: the expression '" + value.GetSimpleValue() + "is not a number!\n" +
+                    "Note that lt/bt operators in single-condition action has to get numeric arguments. Problem occurred in class SingleCondition when trying to run single-condition action");
+        }
     }
 }
