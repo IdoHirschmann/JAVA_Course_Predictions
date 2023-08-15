@@ -15,5 +15,7 @@ public class TesterMain {
         }
 
         Simulation simulation = createSimulation(predictionManager.getSimulationDefinition(), 0);
+        simulation.getEnvironments().forEach((name,environment) -> environment.setValue("10"));
+        simulation.runSimulation();
     }
 }

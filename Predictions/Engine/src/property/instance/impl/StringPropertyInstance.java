@@ -15,22 +15,6 @@ public class StringPropertyInstance extends AbstractPropertyInstance {
         this.value = value;
     }
 
-    private String generateRandomString() {
-        Random random = new Random();
-        StringBuilder sb = new StringBuilder();
-        Random randomLength = new Random();
-
-        int length = randomLength.nextInt(MAX_STRING_LENGTH);
-
-        for (int i = 0; i < length; i++) {
-            int randomIndex = random.nextInt(ALLOWED_CHARACTERS.length());
-            char randomChar = ALLOWED_CHARACTERS.charAt(randomIndex);
-            sb.append(randomChar);
-        }
-
-        return sb.toString();
-    } //todo - might not be here in the end
-
     @Override
     public PropertyType getType() {
         return PropertyType.STRING;

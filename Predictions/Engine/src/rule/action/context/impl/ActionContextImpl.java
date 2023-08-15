@@ -12,10 +12,8 @@ import java.util.Map;
 public class ActionContextImpl implements ActionContext {
     private EntityInstance primaryEntity;
     private EntityInstanceManager entityManager;
-    private final Map<String, AbstractPropertyInstance> environmentVar;
 
-    public ActionContextImpl(Map<String, AbstractPropertyInstance> environmentVar) {
-        this.environmentVar = environmentVar;
+    public ActionContextImpl() {
         primaryEntity = null;
         entityManager = null;
     }
@@ -39,8 +37,4 @@ public class ActionContextImpl implements ActionContext {
         entityManager.killEntity(entity);
     }
 
-    @Override
-    public AbstractPropertyInstance getEnvironmentVariable(String name) {
-        return environmentVar.get(name);
-    }
 }

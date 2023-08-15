@@ -9,5 +9,4 @@ public interface ActionContext {
     void setEntityManager(EntityInstanceManager entityManager);
     void setPrimaryEntityInstance(EntityInstance entity);
     void removeEntity(EntityInstance entity);
-    AbstractPropertyInstance getEnvironmentVariable(String name);
 }

@@ -1,19 +1,19 @@
 package termination;
 
 public class Termination {
-    private final int ticks;
-    private final int seconds;
+    private final Integer ticks;
+    private final Integer seconds;
 
-    public Termination(int ticks, int seconds) {
+    public Termination(Integer ticks, Integer seconds) {
         this.ticks = ticks;
         this.seconds = seconds;
     }
 
-    public int getTicks() {
+    public Integer getTicks() {
         return ticks;
     }
 
-    public int getSeconds() {
+    public Integer getSeconds() {
         return seconds;
     }
 }

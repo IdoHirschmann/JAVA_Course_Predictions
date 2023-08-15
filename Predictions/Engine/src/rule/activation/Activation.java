@@ -2,7 +2,7 @@ package rule.activation;
 
 public class Activation {
     private Integer ticks = 1;
-    private Double probabilty = 1.0;
+    private Double probability = 1.0;
 
     public Activation() {
     }
@@ -12,12 +12,12 @@ public class Activation {
             this.ticks = ticks;
         }
         if(probabilty != null) {
-            this.probabilty = probabilty;
+            this.probability = probabilty;
         }
     }
 
-    public Double getProbabilty() {
-        return probabilty;
+    public Double getProbability() {
+        return probability;
     }
 
     public Integer getTicks() {

@@ -1,13 +1,13 @@
 package simulation.impl;
 
 import entity.instance.EntityInstanceManager;
-import expression.impl.property.AbstractPropertyExpression;
 import property.instance.AbstractPropertyInstance;
 import rule.Rule;
+import rule.action.context.api.ActionContext;
+import rule.action.context.impl.ActionContextImpl;
 import simulation.api.EnvironmentsSimulation;
 import termination.Termination;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
@@ -20,10 +20,10 @@ public class Simulation implements EnvironmentsSimulation {
     //Need factory to this class?
     private Map<String, EntityInstanceManager> entityManager;
     private final Map<String, AbstractPropertyInstance> environments;
-    private List<Rule> rules;
-    private Termination termination;
+    private final List<Rule> rules;
+    private final Termination termination;
     private String formattedDate;
-    private int identifyNumber;
+    private final int identifyNumber;
 
     public Simulation(Map<String, EntityInstanceManager> entityManager, Map<String, AbstractPropertyInstance> environments, List<Rule> rules, Termination termination, int identifyNumber) {
         this.entityManager = entityManager;
@@ -47,7 +47,46 @@ public class Simulation implements EnvironmentsSimulation {
 
     public void runSimulation() {
         setCurrentSimulation(this); //this is the first thing you do when running the simulation
-        //todo - holy moly :(
+        long startTime = System.currentTimeMillis();
+        long maxRuntimeMilliseconds;
+        Integer ticks = termination.getTicks();
+        Integer seconds = termination.getSeconds();
+        Integer currTick = 1;
+
+        if(ticks != null && seconds != null){
+            maxRuntimeMilliseconds = seconds * 1000;
+
+            for(; currTick <= ticks ; currTick++){
+                if (System.currentTimeMillis() - startTime >= maxRuntimeMilliseconds) {
+                    break;
+                }
+                simulationIteration(currTick);
+            }
+        } else if (ticks == null && seconds !=null) {
+            boolean timesUp = false;
+            maxRuntimeMilliseconds = seconds * 1000;
+
+            while (!timesUp){
+                if (System.currentTimeMillis() - startTime >= maxRuntimeMilliseconds) {
+                    timesUp = true;
+                    break;
+                }
+                simulationIteration(currTick);
+                currTick++;
+            }
+        }else {
+            for(; currTick <= ticks ; currTick++){
+                simulationIteration(currTick);
+            }
+        }
+    }
+
+    private void simulationIteration(Integer currTick) {
+        for (Rule rule : rules) {
+            if(rule.isActivatable(currTick)){
+                rule.activate(entityManager);
+            }
+        }
     }
 
     @Override
