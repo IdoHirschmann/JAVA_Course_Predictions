@@ -11,7 +11,7 @@ public abstract class Helper {
     public static Integer random(int value){
         Random random = new Random();
 
-        return random.nextInt(value + 1) - 1;
+        return random.nextInt(value + 1);
     }
 
     public static void setCurrentSimulation(Simulation i_CurrentSimulation) {

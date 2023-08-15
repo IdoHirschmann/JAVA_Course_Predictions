@@ -5,7 +5,7 @@ import java.util.Objects;
 
 public class EntityInstanceManager {
     private final String name;
-    private final List<EntityInstance> entityInstanceList;
+    private List<EntityInstance> entityInstanceList;
 
     public EntityInstanceManager(String name, List<EntityInstance> list) {
         this.name = name;
@@ -22,6 +22,10 @@ public class EntityInstanceManager {
     }
     public String getName() {
         return name;
+    }
+
+    public void setEntityInstanceList(List<EntityInstance> entityInstanceList) {
+        this.entityInstanceList = entityInstanceList;
     }
 
     @Override

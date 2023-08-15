@@ -53,10 +53,10 @@ public abstract class ActionCreator {
 
     private static Action createIncrease(PRDAction prdAction) {
         EntityDefinition entityDef = entityDefinitionMap.get(prdAction.getEntity());
-        checkIfEntityExist(entityDef, "increase");
+        checkIfEntityExist(entityDef, "increase", prdAction.getEntity());
 
         PropertyDefinition propertyDef = entityDef.getProperty(prdAction.getProperty());
-        checkIfPropertyExist(entityDef.getName() ,propertyDef,"increase");
+        checkIfPropertyExist(entityDef.getName() ,propertyDef,"increase", prdAction.getProperty());
         checkIfNumberProperty(propertyDef, "increase");
 
         Expression expression = createExpression(prdAction.getBy());
@@ -67,10 +67,10 @@ public abstract class ActionCreator {
 
     private static Action createDecrease(PRDAction prdAction) {
         EntityDefinition entityDef = entityDefinitionMap.get(prdAction.getEntity());
-        checkIfEntityExist(entityDef, "decrease");
+        checkIfEntityExist(entityDef, "decrease", prdAction.getEntity());
 
         PropertyDefinition propertyDef = entityDef.getProperty(prdAction.getProperty());
-        checkIfPropertyExist(entityDef.getName(), propertyDef,"decrease");
+        checkIfPropertyExist(entityDef.getName(), propertyDef,"decrease", prdAction.getProperty());
         checkIfNumberProperty(propertyDef, "decrease");
 
         Expression expression = createExpression(prdAction.getBy());
@@ -81,10 +81,10 @@ public abstract class ActionCreator {
 
     private static Action createCalculation(PRDAction prdAction) {
         EntityDefinition entityDef = entityDefinitionMap.get(prdAction.getEntity());
-        checkIfEntityExist(entityDef, "calculation");
+        checkIfEntityExist(entityDef, "calculation", prdAction.getEntity());
 
-        PropertyDefinition propertyDef = entityDef.getProperty(prdAction.getProperty());
-        checkIfPropertyExist(entityDef.getName(), propertyDef,"calculation");
+        PropertyDefinition propertyDef = entityDef.getProperty(prdAction.getResultProp());
+        checkIfPropertyExist(entityDef.getName(), propertyDef,"calculation", prdAction.getResultProp());
         checkIfNumberProperty(propertyDef, "calculation");
 
         String desireCalc = checkIfMultiplyOrDivide(prdAction);
@@ -116,7 +116,7 @@ public abstract class ActionCreator {
 
     private static Action createCondition(PRDAction prdAction) {
         EntityDefinition entityDef = entityDefinitionMap.get(prdAction.getEntity());
-        checkIfEntityExist(entityDef, "condition");
+        checkIfEntityExist(entityDef, "condition", prdAction.getEntity());
 
         PRDCondition prdCondition = prdAction.getPRDCondition();
         return createConditionHelper(prdAction, prdCondition,entityDef);
@@ -135,7 +135,7 @@ public abstract class ActionCreator {
     }
     private static AbstractCondition createSingleCondition(PRDAction prdAction, EntityDefinition entityDef, PRDCondition prdCondition) {
         PropertyDefinition propertyDef = entityDef.getProperty(prdCondition.getProperty());
-        checkIfPropertyExist(entityDef.getName(), propertyDef,"Single-Condition");
+        checkIfPropertyExist(entityDef.getName(), propertyDef,"Single-Condition", prdCondition.getProperty());
 
         Expression value = createExpression(prdCondition.getValue());
 
@@ -177,10 +177,10 @@ public abstract class ActionCreator {
 
     private static Action createSet(PRDAction prdAction) {
         EntityDefinition entityDef = entityDefinitionMap.get(prdAction.getEntity());
-        checkIfEntityExist(entityDef, "set");
+        checkIfEntityExist(entityDef, "set", prdAction.getEntity());
 
         PropertyDefinition propertyDef = entityDef.getProperty(prdAction.getProperty());
-        checkIfPropertyExist(entityDef.getName() ,propertyDef,"set");
+        checkIfPropertyExist(entityDef.getName() ,propertyDef,"set", prdAction.getProperty());
 
         Expression value = createExpression(prdAction.getValue());
 
@@ -189,7 +189,7 @@ public abstract class ActionCreator {
 
     private static Action createKill(PRDAction prdAction) {
         EntityDefinition entityDef = entityDefinitionMap.get(prdAction.getEntity());
-        checkIfEntityExist(entityDef, "kill");
+        checkIfEntityExist(entityDef, "kill", prdAction.getEntity());
 
         return new Kill(entityDef);
     }
@@ -197,15 +197,15 @@ public abstract class ActionCreator {
     public static void setEntityDefinitionMap(Map<String, EntityDefinition> entityDefinitionMap) {
         ActionCreator.entityDefinitionMap = entityDefinitionMap;
     }
-    private static void checkIfEntityExist(EntityDefinition entityDef, String desireAction) {
+    private static void checkIfEntityExist(EntityDefinition entityDef, String desireAction, String entityName) {
         if(entityDef == null) {
-            throw new NotRealEntityException("NotRealEntityException: the entity name '" + entityDef.getName() + "' does not exist.\n" +
+            throw new NotRealEntityException("NotRealEntityException: the entity name '" + entityName + "' does not exist.\n" +
                     "Note that every action need to get a real entity name! Problem occurred in class ActionCreator when trying to create " + desireAction + " action");
         }
     }
-    private static void checkIfPropertyExist(String entityName, PropertyDefinition propertyDef, String desireAction) {
+    private static void checkIfPropertyExist(String entityName, PropertyDefinition propertyDef, String desireAction, String propertyName) {
         if(propertyDef == null) {
-            throw new PropertyNotFoundException("PropertyNotFoundException: the property name '" + propertyDef.getName() + "' does not exist in entity '" + entityName + "'.\n" +
+            throw new PropertyNotFoundException("PropertyNotFoundException: the property name '" + propertyName + "' does not exist in entity '" + entityName + "'.\n" +
                     "Note that every action need to get a valid property name! Problem occurred in class ActionCreator when trying to create " + desireAction + " action");
         }
     }
@@ -217,7 +217,7 @@ public abstract class ActionCreator {
     }
     private static void checkIfNumberExpression(Expression expression, String desireAction) {
         if(expression.getType() != ExpressionType.INT && expression.getType() != ExpressionType.FLOAT){
-            throw new ExpressionTypeException("ExpressionTypeException: the expression '" + expression.GetSimpleValue() + "is not a number!\n" +
+            throw new ExpressionTypeException("ExpressionTypeException: the expression '" + expression.GetSimpleValue() + "' is not a number!\n" +
                     "Note that " + desireAction + " action has to get numeric arguments. Problem occurred in class ActionCreator when trying to create " + desireAction + " action");
         }
     }

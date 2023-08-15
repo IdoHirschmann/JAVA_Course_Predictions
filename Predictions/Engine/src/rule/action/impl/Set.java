@@ -5,6 +5,7 @@ import exception.TypeUnmatchedException;
 import expression.ExpressionType;
 import expression.api.Expression;
 import property.definition.PropertyType;
+import property.instance.AbstractPropertyInstance;
 import rule.action.ActionType;
 import rule.action.context.api.ActionContext;
 import rule.action.impl.AbstractAction;
@@ -22,14 +23,18 @@ public class Set extends AbstractAction {
     @Override
     public void Invoke(ActionContext context) {
         PropertyType propertyType = context.getPrimaryEntityInstance().getProperty(property).getType();
+        AbstractPropertyInstance propertyToSet = context.getPrimaryEntityInstance().getProperty(property);
         ExpressionType valueType = value.getType();
+        String newValue = value.GetExplicitValue(context.getPrimaryEntityInstance());
 
         if(propertyType == PropertyType.DECIMAL && valueType == ExpressionType.INT) {
-            context.getPrimaryEntityInstance().getProperty(property).setValue(value.GetExplicitValue(context.getPrimaryEntityInstance()));
+            Integer numberNewValue = Integer.parseInt(newValue);
+            propertyToSet.setValue(checkIfActionResultIsInRange(numberNewValue, propertyToSet).toString());
             return;
         }
         if(propertyType == PropertyType.FLOAT && (valueType == ExpressionType.INT || valueType == ExpressionType.FLOAT)) {
-            context.getPrimaryEntityInstance().getProperty(property).setValue(value.GetExplicitValue(context.getPrimaryEntityInstance()));
+            Float numberNewValue = Float.parseFloat(newValue);
+            propertyToSet.setValue(checkIfActionResultIsInRange(numberNewValue, propertyToSet).toString());
             return;
         }
         if(propertyType == PropertyType.BOOLEAN && valueType == ExpressionType.BOOLEAN) {

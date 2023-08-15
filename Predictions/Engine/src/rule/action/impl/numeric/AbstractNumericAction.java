@@ -3,6 +3,7 @@ package rule.action.impl.numeric;
 import entity.definition.EntityDefinition;
 import exception.NotRealPropertyException;
 import exception.PropertyNotFoundException;
+import property.definition.PropertyType;
 import property.instance.AbstractPropertyInstance;
 import rule.action.ActionType;
 import rule.action.context.api.ActionContext;
@@ -39,17 +40,6 @@ public abstract class AbstractNumericAction extends AbstractAction {
         else {
             throw new NotRealPropertyException("NotRealPropertyException! The requested property" + resultProp + "does not exist. Occurred " + this.getClass());
         }
-    }
-
-    protected Number checkIfActionResultIsInRange(Number result , AbstractPropertyInstance propertyInstance){
-        if(!(propertyInstance.isInRange(result))){
-            if(propertyInstance.getRange().getFrom() > result.doubleValue()){
-                result = propertyInstance.getRange().getFrom();
-            } else{
-                result = propertyInstance.getRange().getTo();
-            }
-        }
-        return result;
     }
 
 //    protected Boolean isANumber(AbstractPropertyInstance property) {

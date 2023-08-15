@@ -9,8 +9,11 @@ import java.util.Objects;
 public class EntityInstance {
     private Map<String, AbstractPropertyInstance> properties;
 
+    private Boolean toKill;
+
     public EntityInstance(Map<String, AbstractPropertyInstance> properties) {
         this.properties = properties;
+        toKill = false;
     }
 
     public AbstractPropertyInstance getProperty(String propertyName) {
@@ -29,6 +32,14 @@ public class EntityInstance {
         }
 
         return  res;
+    }
+
+    public void killMe() {
+        toKill = true;
+    }
+
+    public Boolean getToKill() {
+        return toKill;
     }
 
     @Override

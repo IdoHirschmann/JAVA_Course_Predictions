@@ -33,10 +33,14 @@ public abstract class FactoryDefinition {
     }
 
     private static PropertyDefinition createPropertyDefinition(PRDProperty prdProperty) {
-        Range range = new Range(prdProperty.getPRDRange().getFrom(), prdProperty.getPRDRange().getTo());
         PropertyDefinitionValue value = new PropertyDefinitionValue(prdProperty.getPRDValue().isRandomInitialize(),prdProperty.getPRDValue().getInit());
         String type = new String(prdProperty.getType());
         String name = new String(prdProperty.getPRDName());
+
+        Range range = null;
+        if(type.equals("decimal") || type.equals("float")) {
+            range = new Range(prdProperty.getPRDRange().getFrom(), prdProperty.getPRDRange().getTo());
+        }
 
         if(!type.equals("decimal") && !type.equals("boolean") && !type.equals("float") && !type.equals("string")) {
             throw new PropertyTypeException("PropertyTypeException: " + prdProperty.getPRDName() + " type is not valid!" + " Problem occurred in class FactoryDefinition");
@@ -119,7 +123,11 @@ public abstract class FactoryDefinition {
     private static PropertyDefinition createEnvironmentPropDefinition(PRDEnvProperty prdEnvProperty) {
         String type = new String(prdEnvProperty.getType());
         String name = new String(prdEnvProperty.getPRDName());
-        Range range = new Range(prdEnvProperty.getPRDRange().getFrom(), prdEnvProperty.getPRDRange().getTo());
+
+        Range range = null;
+        if(type.equals("decimal") || type.equals("float")) {
+            range = new Range(prdEnvProperty.getPRDRange().getFrom(), prdEnvProperty.getPRDRange().getTo());
+        }
 
         if(!type.equals("decimal") && !type.equals("boolean") && !type.equals("float") && !type.equals("string")) {
             throw new PropertyTypeException("PropertyTypeException: " + name + " type is not valid!\n" +

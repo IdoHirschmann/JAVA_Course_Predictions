@@ -34,12 +34,12 @@ public class Increase extends AbstractNumericAction {
             }
         }
         else if (by.getType() == ExpressionType.FLOAT) {
-            if(isFloat(newPropertyValue.toString())) {
-                newPropertyValue = newPropertyValue.floatValue() + Float.parseFloat(by.GetExplicitValue(context.getPrimaryEntityInstance()));
-            }
-            else {
+            if(isDecimal(newPropertyValue.toString())) {
                 throw new TryToPreformFloatActionOnDecimalPropertyException("Float add on Decimal property is not allowed. Error occurred in"
                         + this.getClass());
+            }
+            else {
+                newPropertyValue = newPropertyValue.floatValue() + Float.parseFloat(by.GetExplicitValue(context.getPrimaryEntityInstance()));
             }
         }
 
