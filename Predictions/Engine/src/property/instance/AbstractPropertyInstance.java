@@ -25,6 +25,9 @@ public abstract class AbstractPropertyInstance {
     }
 
     public Boolean isInRange(Number number) {
+        if(range == null) {
+            return true;
+        }
         return range.IsInRange(number.doubleValue());
     }
 

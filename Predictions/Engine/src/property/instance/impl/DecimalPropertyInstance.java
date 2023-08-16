@@ -3,6 +3,7 @@ import property.definition.PropertyType;
 import property.definition.range.Range;
 import property.instance.AbstractPropertyInstance;
 
+import static utills.string.StringConvertor.convertStringToFloat;
 import static utills.string.StringConvertor.convertStringToInt;
 
 public class DecimalPropertyInstance extends AbstractPropertyInstance {
@@ -24,11 +25,24 @@ public class DecimalPropertyInstance extends AbstractPropertyInstance {
     }
     @Override
     public void setValue(String value) {
+        Integer newValue;
+
         try {
-            this.value = convertStringToInt(value);
+            newValue = convertStringToInt(value);
         }
         catch (NumberFormatException e) {
             throw new NumberFormatException(e.getMessage() + "Error occurred in setValue in DecimalPropertyInstance class");
         }
+
+        if(!isInRange(newValue)) {
+            if(newValue > getRange().getTo()) {
+                newValue = (int)getRange().getTo();
+            }
+            else {
+                newValue = (int)getRange().getTo();
+            }
+        }
+
+        this.value = newValue;
     }
 }

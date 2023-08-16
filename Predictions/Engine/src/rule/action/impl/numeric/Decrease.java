@@ -34,7 +34,6 @@ public class Decrease extends AbstractNumericAction {
             }
         }
         else if (by.getType() == ExpressionType.FLOAT) {
-            //todo
             if(isFloat(newPropertyValue.toString())) {
                 newPropertyValue = newPropertyValue.floatValue() - Float.parseFloat(by.GetExplicitValue(context.getPrimaryEntityInstance()));
             }

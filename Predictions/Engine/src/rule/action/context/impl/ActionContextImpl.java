@@ -7,8 +7,6 @@ import rule.action.context.api.ActionContext;
 
 import java.util.Map;
 
-//todo - remmber to update the context before every action
-
 public class ActionContextImpl implements ActionContext {
     private EntityInstance primaryEntity;
     private EntityInstanceManager entityManager;

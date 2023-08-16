@@ -25,12 +25,24 @@ public class FloatPropertyInstance extends AbstractPropertyInstance {
     }
     @Override
     public void setValue(String value) {
+        Float newValue;
+
         try {
-            this.value = convertStringToFloat(value);
+            newValue = convertStringToFloat(value);
         }
         catch (NumberFormatException e) {
             throw new NumberFormatException(e.getMessage() + "Error occurred in setValue in FloatPropertyInstance class");
         }
-    }
 
+        if(!isInRange(newValue)) {
+            if(newValue > getRange().getTo()) {
+                newValue = (float)getRange().getTo();
+            }
+            else {
+                newValue = (float)getRange().getTo();
+            }
+        }
+
+        this.value = newValue;
+    }
 }

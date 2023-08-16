@@ -17,7 +17,6 @@ import java.util.Objects;
 import static utills.helperFunction.Helper.setCurrentSimulation;
 
 public class Simulation implements EnvironmentsSimulation {
-    //Need factory to this class?
     private Map<String, EntityInstanceManager> entityManager;
     private final Map<String, AbstractPropertyInstance> environments;
     private final List<Rule> rules;

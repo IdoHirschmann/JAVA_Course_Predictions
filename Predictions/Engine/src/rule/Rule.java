@@ -61,7 +61,6 @@ public class Rule {
     public boolean isActivatable(int currTick) {
         Random random = new Random();
 
-        //todo let is check if i done it correctly
         if(currTick % activation.getTicks() == 0 && random.nextFloat() < activation.getProbability()) {
             return true;
         } else {
