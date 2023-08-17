@@ -106,7 +106,7 @@ public abstract class ExpressionCreator {
             return convertStringToInt(randomInput);
         } catch (Exception exception) {
             throw new RandomInputException("RandomInputException: the following input " + randomInput + " is not a valid input to function random.\n" +
-                    "Note that random has to get a single integer! Problem occurred in class ExpressionCreator");
+                    "       Note that random has to get a single integer! Problem occurred in class ExpressionCreator");
         }
     }
 
@@ -130,7 +130,7 @@ public abstract class ExpressionCreator {
 
         if(environmentDef == null) {
             throw  new EnvironmentInputException("EnvironmentInputException: the following input '" + environmentInput + "' is not a valid input to function environment.\n" +
-                    "Note that environment has to get a single environment's name! Problem occurred in class ExpressionCreator");
+                    "       Note that environment has to get a single environment's name! Problem occurred in class ExpressionCreator");
         }
     }
 }

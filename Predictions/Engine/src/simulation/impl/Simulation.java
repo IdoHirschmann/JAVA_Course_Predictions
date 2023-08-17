@@ -23,13 +23,14 @@ public class Simulation implements EnvironmentsSimulation {
     private final Termination termination;
     private String formattedDate;
     private final int identifyNumber;
-
+    private String simulationStopCause;
     public Simulation(Map<String, EntityInstanceManager> entityManager, Map<String, AbstractPropertyInstance> environments, List<Rule> rules, Termination termination, int identifyNumber) {
         this.entityManager = entityManager;
         this.environments = environments;
         this.rules = rules;
         this.termination = termination;
         this.identifyNumber = identifyNumber;
+        this.simulationStopCause = null;
 
         LocalDateTime now = LocalDateTime.now();
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy | HH:mm:ss");
@@ -57,9 +58,13 @@ public class Simulation implements EnvironmentsSimulation {
 
             for(; currTick <= ticks ; currTick++){
                 if (System.currentTimeMillis() - startTime >= maxRuntimeMilliseconds) {
+                    simulationStopCause = "Time";
                     break;
                 }
                 simulationIteration(currTick);
+                if(currTick == ticks) {
+                    simulationStopCause = "Ticks";
+                }
             }
         } else if (ticks == null && seconds !=null) {
             boolean timesUp = false;
@@ -68,6 +73,7 @@ public class Simulation implements EnvironmentsSimulation {
             while (!timesUp){
                 if (System.currentTimeMillis() - startTime >= maxRuntimeMilliseconds) {
                     timesUp = true;
+                    simulationStopCause = "Time";
                     break;
                 }
                 simulationIteration(currTick);
@@ -76,6 +82,9 @@ public class Simulation implements EnvironmentsSimulation {
         }else {
             for(; currTick <= ticks ; currTick++){
                 simulationIteration(currTick);
+                if(currTick == ticks) {
+                    simulationStopCause = "Ticks";
+                }
             }
         }
     }

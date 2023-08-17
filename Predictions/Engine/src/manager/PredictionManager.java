@@ -1,5 +1,8 @@
 package manager;
 
+import option1.XmlFullPathDTO;
+import option2.SimulationDefinitionDTO;
+import option3.*;
 import simulation.impl.Simulation;
 import simulation.definition.SimulationDefinition;
 
@@ -19,10 +22,27 @@ public class PredictionManager {
         xmlLoader = new XmlLoader();
     }
 
-    public void loadXmlData(String filePath) throws JAXBException, IOException {
-        //todo - need to change the input to DTO (the string its just for testing)
-        SimulationDefinition newSimulationDefinition = xmlLoader.loadXmlData(filePath);
+    public void loadXmlData(XmlFullPathDTO xmlFullPathDTO) throws JAXBException, IOException {
+        SimulationDefinition newSimulationDefinition = xmlLoader.loadXmlData(xmlFullPathDTO.getFullPathXML());
         this.simulationDefinition = newSimulationDefinition;
+    }
+
+
+    public EnvironmentDefinitionListDTO runSimulationStep1() {
+
+        return null;
+        //todo ^^^^
+    }
+
+    public SimulationFinishDTO runSimulationStep2(EnvironmentInitListDTO environmentInitListDTO) {
+        //todo
+        return null;
+    }
+
+    public SimulationDefinitionDTO showCurrentSimulationData() {
+        //todo
+
+        return null;
     }
 
     public SimulationDefinition getSimulationDefinition() {

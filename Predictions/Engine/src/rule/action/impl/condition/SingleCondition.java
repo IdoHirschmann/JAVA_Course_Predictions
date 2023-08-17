@@ -98,13 +98,14 @@ public class SingleCondition extends AbstractCondition {
     private void checkIfNumberProperty(ActionContext context) {
         if(!isANumberProp(context)) {
             throw new PropertyTypeException("PropertyTypeException: the property '" + property + "is not a numeric property!\n" +
-                    "Note that lt/bt operators in single-condition action has to get numeric arguments. Problem occurred in class SingleCondition when trying to run single-condition action");
+                    "       Note that lt/bt operators in single-condition action has to get numeric arguments.\n" +
+                    "       Problem occurred in class SingleCondition when trying to run single-condition action");
         }
     }
     private void checkIfNumberExpression() {
         if(!isANumberExp()) {
             throw new ExpressionTypeException("ExpressionTypeException: the expression '" + value.GetSimpleValue() + "is not a number!\n" +
-                    "Note that lt/bt operators in single-condition action has to get numeric arguments. Problem occurred in class SingleCondition when trying to run single-condition action");
+                    "       Note that lt/bt operators in single-condition action has to get numeric arguments. Problem occurred in class SingleCondition when trying to run single-condition action");
         }
     }
 }
