@@ -27,9 +27,16 @@ public class Rule {
         context = new ActionContextImpl();
     }
 
-    public void activate(Map<String, EntityInstanceManager> entityInstanceManagerMap)
-    {
+    public void activate(Map<String, EntityInstanceManager> entityInstanceManagerMap) {
         actions.forEach(action -> runAction(action, entityInstanceManagerMap));
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public Activation getActivation() {
+        return activation;
     }
 
     private void runAction(Action action , Map<String, EntityInstanceManager> entityInstanceManagerMap) {
@@ -46,6 +53,13 @@ public class Rule {
         entityKiller(primaryEntity);
     }
 
+    public List<Action> getActions() {
+        return actions;
+    }
+
+    public int numOfActions(){
+        return actions.size();
+    }
     private void entityKiller(EntityInstanceManager primaryEntity) {
         List<EntityInstance> res = new ArrayList<>();
 

@@ -7,6 +7,9 @@ public abstract class AbstractPropertyInstance {
     private final String name;
     private final Range range;
 
+    public String getName() {
+        return name;
+    }
 
     public AbstractPropertyInstance(String name) {
         this.name = name;

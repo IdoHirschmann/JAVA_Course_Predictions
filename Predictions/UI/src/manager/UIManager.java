@@ -1,13 +1,17 @@
 package manager;
 
+import entity.instance.EntityInstance;
 import option1.XmlFullPathDTO;
 import option2.*;
 import option3.*;
+import option4.AmountDTO;
+import option4.InfoType;
+import option4.PastSimulationInfoDTO;
+import option4.SimulationDesiredInfoDTO;
+import option4.histogram.*;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Random;
-import java.util.Scanner;
+import java.io.*;
+import java.util.*;
 
 public class UIManager {
     private PredictionManager predictionManager = new PredictionManager();
@@ -17,6 +21,8 @@ public class UIManager {
         String input;
         boolean isXmlLoaded = false;
         boolean isSimulationRun = false;
+
+        //loadDataFromFile(scanner); //todo move
 
         printPredictionWelcome();
         while (true) {
@@ -30,7 +36,7 @@ public class UIManager {
                     case 1:
                         System.out.println("Load new XML file");
                         System.out.println("-----------------");
-                        isXmlLoaded = isXmlLoaded || loadXmlFile(scanner);
+                        isXmlLoaded = loadXmlFile(scanner) || isXmlLoaded;
                         break;
                     case 2:
                         if(checkIfXmlLoaded(isXmlLoaded, "Show current simulation data")) {
@@ -44,19 +50,20 @@ public class UIManager {
                             System.out.println("Run new simulation");
                             System.out.println("----------------------");
 
-                            isSimulationRun = isSimulationRun || runSimulation(scanner);
+                            isSimulationRun = runSimulation(scanner) || isSimulationRun;
                         }
                         break;
                     case 4:
                         if(checkIfSimulationRun(isSimulationRun)) {
                             System.out.println("View past simulation information");
                             System.out.println("--------------------------------");
-                            // Perform action for option 4
+                            viewPastSimulationInfo(scanner);
                         }
                         break;
                     case 5:
                         System.out.println("Exiting the menu");
                         System.out.println("----------------");
+                        //storeDataToFile(scanner);
                         scanner.close();
                         return;
                 }
@@ -80,7 +87,6 @@ public class UIManager {
         System.out.println("  5. Exit");
         System.out.print("Enter your choice (1-5): ");
     }
-
     private boolean loadXmlFile(Scanner scanner) {
         String xmlFilePath;
         System.out.print("  Please enter full path to your xml file: ");
@@ -144,11 +150,12 @@ public class UIManager {
                 System.out.print(str + "  ");
             }
             System.out.println();
+            System.out.println();
             counter++;
         }
     }
     private void printTermination(TerminationDTO terminationDTO) {
-        System.out.println("   - Terminations:");
+        System.out.println("  Terminations:");
         if(terminationDTO.getTicks() != null) {
             System.out.println("     * Ticks: --------------- " + terminationDTO.getTicks());
         }
@@ -167,8 +174,8 @@ public class UIManager {
             SimulationFinishDTO simulationFinishDTO = runSimulationHelper2(environmentDefinitionListDTO, scanner);
 
             System.out.println("  Simulation finished!");
-            System.out.println("   - Simulation id: -----------" + simulationFinishDTO.getSimulationID());
-            System.out.println("   - Simulation stop cause: ---" + simulationFinishDTO.getSimulationStopCause());
+            System.out.println("   - Simulation id: ----------- " + simulationFinishDTO.getSimulationID());
+            System.out.println("   - Simulation stop cause: --- " + simulationFinishDTO.getSimulationStopCause());
             System.out.println();
             return true;
         }
@@ -181,77 +188,81 @@ public class UIManager {
         return predictionManager.runSimulationStep1();
     }
     private SimulationFinishDTO runSimulationHelper2( EnvironmentDefinitionListDTO environmentDefinitionListDTO, Scanner scanner) {
+        Integer environmentToInit = 1 , environmentLength = environmentDefinitionListDTO.getEnvironmentDefinitionDTOList().size();
+        String input;
+
         List<EnvironmentInitDTO> environmentInitDTOList = new ArrayList<>();
+
         for (EnvironmentDefinitionDTO environmentDefinitionDTO : environmentDefinitionListDTO.getEnvironmentDefinitionDTOList()) {
-            environmentInitDTOList.add(createEnvironmentInit(environmentDefinitionDTO, scanner));
+            environmentInitDTOList.add(createEnvironmentInit(environmentDefinitionDTO,false ,scanner));
         }
+        System.out.println("  Please choose which environment var to be initialized: (-1 to not initialize any var)");
+        for (EnvironmentDefinitionDTO environmentDefinitionDTO : environmentDefinitionListDTO.getEnvironmentDefinitionDTOList()) {
+            System.out.println("  " + environmentToInit + ") " + environmentDefinitionDTO.getName());
+            environmentToInit++;
+        }
+        String rangePattern = "^(?:" + "1" + "|" + environmentLength + "|[1-9]\\d*)$";
+
+        do {
+            input = scanner.nextLine();
+            if (input.matches(rangePattern)) {
+                EnvironmentInitDTO res = createEnvironmentInit(environmentDefinitionListDTO.getEnvironmentDefinitionDTOList().get(Integer.parseInt(input) - 1),true ,scanner);
+                environmentInitDTOList.add(Integer.parseInt(input) - 1, res);
+                environmentInitDTOList.remove(Integer.parseInt(input));
+                environmentToInit = 1;
+                System.out.println("\n  Please choose which environment var to be initialized: (-1 to not initialize any var)");
+                for (EnvironmentDefinitionDTO environmentDefinitionDTO : environmentDefinitionListDTO.getEnvironmentDefinitionDTOList()) {
+                    System.out.println("  " + environmentToInit + ") " + environmentDefinitionDTO.getName());
+                    environmentToInit++;
+                }
+            }
+        }while (!input.equals("-1"));
+
         EnvironmentInitListDTO environmentsIntDTO = new EnvironmentInitListDTO(environmentInitDTOList);
 
         return predictionManager.runSimulationStep2(environmentsIntDTO);
     }
-    private EnvironmentInitDTO createEnvironmentInit(EnvironmentDefinitionDTO environmentDefinitionDTO, Scanner scanner) {
+    private EnvironmentInitDTO createEnvironmentInit(EnvironmentDefinitionDTO environmentDefinitionDTO, boolean isNotRandom, Scanner scanner) {
         String name = environmentDefinitionDTO.getName();
         String type = environmentDefinitionDTO.getType();
         String from = environmentDefinitionDTO.getRangeFrom();
         String to = environmentDefinitionDTO.getRangeTo();
         String value = null;
 
-        System.out.println("  Creating environment: " + name);
-        boolean isUserInput = environmentCreationMenu(scanner);
+        if(isNotRandom){
+            System.out.println("  Creating environment: " + name);
+        }
 
         switch(type) {
-            case "decimal":
+            case "DECIMAL":
                 if(from != null) {
-                    value = getIntFromUser(from, to, isUserInput, scanner);
+                    value = getIntFromUser(from, to, isNotRandom, scanner);
                 }
                 else {
-                    value = getIntFromUserNoBounds(isUserInput, scanner);
+                    value = getIntFromUserNoBounds(isNotRandom, scanner);
                 }
                 break;
-            case "float":
+            case "FLOAT":
                 if(from != null) {
-                    value = getFloatFromUser(from, to, isUserInput, scanner);
+                    value = getFloatFromUser(from, to, isNotRandom, scanner);
                 }
                 else {
-                    value = getFloatFromUserNoBounds(isUserInput, scanner);
+                    value = getFloatFromUserNoBounds(isNotRandom, scanner);
                 }
                 break;
-            case "boolean":
-                value = getBooleanFromUser(isUserInput, scanner);
+            case "BOOLEAN":
+                value = getBooleanFromUser(isNotRandom, scanner);
                 break;
-            case "string":
-                value = getStringFromUser(isUserInput, scanner);
+            case "STRING":
+                value = getStringFromUser(isNotRandom, scanner);
                 break;
         }
 
         return new EnvironmentInitDTO(environmentDefinitionDTO.getName(), value);
     }
-    private boolean environmentCreationMenu(Scanner scanner) {
-        while (true) {
-            System.out.println("   - Do you want to put specific value?");
-            System.out.println("      1) Yes");
-            System.out.println("      2) No");
-            System.out.print("     Enter your choice (1-2): ");
-            String input = scanner.nextLine();
-
-            if (input.matches("^[1-2]$")) {
-                int choice = Integer.parseInt(input);
-                switch (choice) {
-                    case 1:
-                        return true;
-                    case 2:
-                        return false;
-                }
-            }
-            else {
-                System.out.println("Error: Invalid input! Please enter 1 or 2\n");
-            }
-        }
-    }
     private String getIntFromUser(String from, String to, boolean isUserInput, Scanner scanner) {
-        //todo - check carefully this function
         if (isUserInput) {
-            String rangePattern = "^" + from + "|" + to + "$";
+            String rangePattern = "^(?:" + from + "|" + to + "|[1-9]\\d*)$";
             while (true) {
                 System.out.print("    Please enter a decimal number between " + from + " - " + to + ": ");
                 String input = scanner.nextLine();
@@ -265,8 +276,8 @@ public class UIManager {
         }
         else {
             Random random = new Random();
-            int lowerBound = (int) Math.ceil(Integer.parseInt(from));
-            int upperBound = (int) Math.floor(Integer.parseInt(to));
+            int lowerBound = (int) Math.ceil(Double.parseDouble(from));
+            int upperBound = (int) Math.floor(Double.parseDouble(to));
             int randomNumber = lowerBound + random.nextInt(upperBound - lowerBound + 1);
             return Integer.toString(randomNumber);
         }
@@ -291,9 +302,8 @@ public class UIManager {
         }
     }
     private String getFloatFromUser(String from, String to, boolean isUserInput, Scanner scanner) {
-        //todo - check carefully this function
         if (isUserInput) {
-            String rangePattern = "^" + from + "|" + to + "$";
+            String rangePattern = "^(?:" + from + "|" + to + "|[1-9]\\d*)$";
             while (true) {
                 System.out.print("    Please enter a float number between " + from + " - " + to + ": ");
                 String input = scanner.nextLine();
@@ -331,7 +341,6 @@ public class UIManager {
         }
     }
     private String getBooleanFromUser(boolean isUserInput, Scanner scanner) {
-        //todo checkkkkk
         if(isUserInput) {
             while (true) {
                 System.out.print("    Please enter 1 for true / 2 for false:");
@@ -367,8 +376,172 @@ public class UIManager {
     }
 
 
+    private void viewPastSimulationInfo(Scanner scanner){
+        List<PastSimulationInfoDTO> pastSimulationInfoDTO = predictionManager.createPastSimulationInfoDTOList();
+        int i ;
+        String desiredSimulation , desiredInfo;
+
+        System.out.println("-View past simulations-\n");
+
+        String rangePattern; //todo change pattern
+        if (pastSimulationInfoDTO.size() == 1) {
+            rangePattern = "^1$"; // Match exactly "1"
+        } else {
+            rangePattern = "^(?:1|[2-" + pastSimulationInfoDTO.size() + "]|[1-9]\\d*)$";
+        }
+
+        do {
+            i=1;
+            System.out.println("  Past successful simulations: ");
+            for(PastSimulationInfoDTO pastSimulationInfo : pastSimulationInfoDTO){
+                System.out.println("   "+i + ")");
+                System.out.println("    - Simulation id: ----- " + pastSimulationInfo.getIdNum());
+                System.out.println("    - Simulation date: --- " + pastSimulationInfo.getDate());
+                i++;
+            }
+            System.out.println();
+
+            System.out.print("  Please choose a desired simulation: ");
+
+            desiredSimulation = scanner.nextLine();
+            if (desiredSimulation.matches(rangePattern)) {
+               break;
+            }
+            else {
+                System.out.println("ERROR: invalid input please enter a number between 1 - " + pastSimulationInfoDTO.size());
+                System.out.println();
+            }
+        }while (true);
+
+        do {
+            System.out.println("  Please choose from the following info options: ");
+            System.out.println("   1) Amount");
+            System.out.println("   2) Histogram");
+            desiredInfo = scanner.nextLine();
+
+            if(desiredInfo.equals("1") || desiredInfo.equals("2")){
+                break;
+            }
+            else {
+                System.out.println("ERROR: invalid input please enter a number between 1 - 2");
+                System.out.println();
+            }
+        }while (true);
+
+        switch (desiredInfo){
+            case "1":
+                amount(desiredSimulation);
+                break;
+            case "2":
+                histogram(scanner, desiredSimulation);
+                break;
+        }
+
+    }
+
+    private void histogram(Scanner scanner, String desiredSimulation) {
+        int i;
+        String desiredEntity, desiredProperty;
+        SimulationDesiredInfoDTO simulationDesiredInfoDTO = new SimulationDesiredInfoDTO(Integer.parseInt(desiredSimulation), InfoType.HISTOGRAM);
+        HistogramAllEntitiesDTO histogramAllEntitiesDTO = predictionManager.getAllEntitiesDTO(simulationDesiredInfoDTO);
+        String rangePattern = "^(?:" + "1" + "|" + histogramAllEntitiesDTO.getNames().size() + "|[1-9]\\d*)$";
+        HistogramSingleEntityDTO singleEntityDTO;
+        HistogramSinglePropDTO singlePropDTO;
+
+        do {
+            i = 1;
+            System.out.println("   Entities names: ");
+            for(String name : histogramAllEntitiesDTO.getNames()){
+                System.out.println("   "+i + ") "+ name);
+                i++;
+            }
+            System.out.println();
+
+            System.out.print("  Please choose a desired entity: ");
+
+            desiredEntity = scanner.nextLine();
+            if (desiredEntity.matches(rangePattern)) {
+                singleEntityDTO = new HistogramSingleEntityDTO(histogramAllEntitiesDTO.getNames().get(Integer.parseInt(desiredEntity) -1));
+                break;
+            }
+            else {
+                System.out.println("ERROR: invalid input please enter a number between 1 - " + histogramAllEntitiesDTO.getNames().size());
+                System.out.println();
+            }
+        }while (true);
+
+        HistogramAllEntityPropsDTO allEntityPropsDTO = predictionManager.getAllEntityPropsDTO(simulationDesiredInfoDTO, singleEntityDTO);
+        rangePattern = "^(?:" + "1" + "|" + allEntityPropsDTO.getNames().size() + "|[1-9]\\d*)$";
+
+        do {
+            i = 1;
+            System.out.println("   Entities properties names: ");
+            for(String name : allEntityPropsDTO.getNames()){
+                System.out.println("   "+i + ") "+ name);
+                i++;
+            }
+            System.out.println();
+
+            System.out.print("  Please choose a desired property: ");
+
+            desiredProperty = scanner.nextLine();
+            if (desiredEntity.matches(rangePattern)) {
+                singlePropDTO = new HistogramSinglePropDTO(allEntityPropsDTO.getNames().get(Integer.parseInt(desiredProperty) - 1));
+                break;
+            }
+            else {
+                System.out.println("ERROR: invalid input please enter a number between 1 - " + allEntityPropsDTO.getNames().size());
+                System.out.println();
+            }
+        }while (true);
+
+        HistogramSpecificPropDTO histogramSpecificPropDTO = predictionManager.getHistogram(singlePropDTO,simulationDesiredInfoDTO,singleEntityDTO);
+
+        showHistogram(histogramSpecificPropDTO);
+    }
+
+    private void showHistogram(HistogramSpecificPropDTO histogramSpecificPropDTO) {
+        String propName = histogramSpecificPropDTO.getName();
+        Map<String, Integer> propHistogram = histogramSpecificPropDTO.getHistogram();
+
+        System.out.println("    Key      | Value");
+        System.out.println("    -----------------");
+
+        for (Map.Entry<String, Integer> entry : propHistogram.entrySet()) {
+            String key = entry.getKey();
+            Integer value = entry.getValue();
+            System.out.printf("    %-10s| %d%n", key, value);
+        }
+    }
+
+    private void amount(String desiredSimulation) {
+        SimulationDesiredInfoDTO simulationDesiredInfoDTO = new SimulationDesiredInfoDTO(Integer.parseInt(desiredSimulation), InfoType.AMOUNT);
+        AmountDTO amountDTO = predictionManager.getAmountDTO(simulationDesiredInfoDTO);
+
+        System.out.println("   Entities amount:");
+        for (int i = 0; i < amountDTO.getEntityNames().size(); i++){
+            System.out.println("    " + i + 1 + ")");
+            System.out.println("     Name: -------------- " + amountDTO.getEntityNames().get(i));
+            System.out.println("     Beginning count: --- " + amountDTO.getStartingCount().get(i));
+            System.out.println("     End count: --------- " + amountDTO.getEndingCount().get(i));
+        }
+        System.out.println();
+    }
 
 
+    private void storeDataToFile(Scanner scanner){
+        try (ObjectOutputStream outputStream = new ObjectOutputStream(new FileOutputStream("/Users/idohirschmann/Desktop/test.txt"))) {
+            outputStream.writeObject(predictionManager);
+            System.out.println("Object saved to file.");
+        } catch (Exception ignore) {
+        }
+    }
+    private void loadDataFromFile(Scanner scanner){
+        try (ObjectInputStream inputStream = new ObjectInputStream(new FileInputStream("/Users/idohirschmann/Desktop/test.txt"))) {
+            predictionManager = (PredictionManager) inputStream.readObject();
+        } catch (Exception ignore) {
+        }
+    }
     private boolean checkIfXmlLoaded(boolean isXmlLoaded, String desireOption) {
         if(!isXmlLoaded) {
             System.out.println("ERROR: Your desire option can not be run. \n       You need to load a valid xml file before trying to " + desireOption + ".\n");

@@ -7,7 +7,7 @@ import java.util.Map;
 import java.util.Objects;
 
 public class EntityInstance {
-    private Map<String, AbstractPropertyInstance> properties;
+    private final Map<String, AbstractPropertyInstance> properties;
 
     private Boolean toKill;
 
@@ -15,6 +15,7 @@ public class EntityInstance {
         this.properties = properties;
         toKill = false;
     }
+
 
     public AbstractPropertyInstance getProperty(String propertyName) {
         return properties.get(propertyName);

@@ -5,11 +5,11 @@ import java.util.List;
 public class RulesDTO {
     private String name;
     private Integer ticks;
-    private Integer probability;
+    private Double probability;
     private Integer actionCounter;
     private List<String> actionTypes;
 
-    public RulesDTO(String name, Integer ticks, Integer probability, Integer actionCounter, List<String> actionTypes) {
+    public RulesDTO(String name, Integer ticks, Double probability, Integer actionCounter, List<String> actionTypes) {
         this.name = name;
         this.ticks = ticks;
         this.probability = probability;
@@ -25,7 +25,7 @@ public class RulesDTO {
         return ticks;
     }
 
-    public Integer getProbability() {
+    public Double getProbability() {
         return probability;
     }
 
