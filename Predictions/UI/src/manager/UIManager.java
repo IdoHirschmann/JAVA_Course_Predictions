@@ -74,9 +74,10 @@ public class UIManager {
                     case 6:
                         System.out.println("Load data from file");
                         System.out.println("-------------------");
-                        loadDataFromFile(scanner);
-                        isXmlLoaded = true;
-                        isSimulationRun = true;
+                        if(loadDataFromFile(scanner)) {
+                            isXmlLoaded = true;
+                            isSimulationRun = true;
+                        }
                         break;
                     case 7:
                         System.out.println("Exiting the menu");
@@ -228,10 +229,12 @@ public class UIManager {
             }
 
             input = scanner.nextLine();
-            if (isNumberInRange(input,environmentLength)) {
-                EnvironmentInitDTO res = createEnvironmentInit(environmentDefinitionListDTO.getEnvironmentDefinitionDTOList().get(Integer.parseInt(input) - 1), true, scanner);
-                environmentInitDTOList.add(Integer.parseInt(input) - 1, res);
-                environmentInitDTOList.remove(Integer.parseInt(input));
+            if(!input.equals("-1")) {
+                if (isNumberInRange(input, environmentLength)) {
+                    EnvironmentInitDTO res = createEnvironmentInit(environmentDefinitionListDTO.getEnvironmentDefinitionDTOList().get(Integer.parseInt(input) - 1), true, scanner);
+                    environmentInitDTOList.add(Integer.parseInt(input) - 1, res);
+                    environmentInitDTOList.remove(Integer.parseInt(input));
+                }
             }
         }while (!input.equals("-1"));
 
@@ -274,7 +277,10 @@ public class UIManager {
                 value = getStringFromUser(isNotRandom, scanner);
                 break;
         }
-        System.out.println();
+        if(isNotRandom){
+            System.out.println();
+        }
+
         return new EnvironmentInitDTO(environmentDefinitionDTO.getName(), value);
     }
     private String getIntFromUser(String from, String to, boolean isUserInput, Scanner scanner) {
@@ -503,7 +509,7 @@ public class UIManager {
             System.out.print("  Please choose a desired property: ");
 
             desiredProperty = scanner.nextLine();
-            if (isNumberInRange(desiredEntity, allEntityPropsDTO.getNames().size())) {
+            if (isNumberInRange(desiredProperty, allEntityPropsDTO.getNames().size())) {
                 singlePropDTO = new HistogramSinglePropDTO(allEntityPropsDTO.getNames().get(Integer.parseInt(desiredProperty) - 1));
                 break;
             }
@@ -560,22 +566,25 @@ public class UIManager {
             System.out.println("\nERROR: " + exception.getMessage() + "\n");
         }
     }
-    private void loadDataFromFile(Scanner scanner){
+    private boolean loadDataFromFile(Scanner scanner){
         try {
                 System.out.print("  Please enter your full file path including the file name: ");
 
                 String filePath = scanner.nextLine();
                 if(!filePath.endsWith(".txt")) {
                     System.out.println("ERROR: Please enter a file ending with .txt\n");
+                    return false;
                 }
                 else {
                     FilePathDTO filePathDTO = new FilePathDTO(filePath);
                     predictionManager.loadDataFromFile(filePathDTO);
                     System.out.println("  File loaded successfully!");
+                    return true;
             }
         }
         catch (Exception exception) {
             System.out.println("\nERROR: " + exception.getMessage() + "\n");
+            return false;
         }
     }
 
@@ -623,7 +632,7 @@ public class UIManager {
 
     private boolean isNumberInRange(String input ,int upperNumber) {
         try {
-            int inputNumber = Integer.parseInt(input);
+            Integer inputNumber = Integer.parseInt(input);
             if(inputNumber >= 1 && inputNumber <= upperNumber) {
                 return true;
             }

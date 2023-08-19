@@ -144,9 +144,16 @@ public class PredictionManager {
         List<PropertyDefinitionDTO> propertyDefinitionDTOList = new ArrayList<>();
 
         for(PropertyDefinition propertyDefinition: propertyDefinitions){
-            propertyDefinitionDTOList.add(new PropertyDefinitionDTO(propertyDefinition.getName(),propertyDefinition.getType().toString(),
-                    propertyDefinition.getRange().getFrom(), propertyDefinition.getRange().getTo(),
-                    propertyDefinition.getValue().isRandomInitialize()));
+            if(propertyDefinition.getRange() != null) {
+                propertyDefinitionDTOList.add(new PropertyDefinitionDTO(propertyDefinition.getName(),propertyDefinition.getType().toString(),
+                        propertyDefinition.getRange().getFrom(), propertyDefinition.getRange().getTo(),
+                        propertyDefinition.getValue().isRandomInitialize()));
+            }
+            else {
+                propertyDefinitionDTOList.add(new PropertyDefinitionDTO(propertyDefinition.getName(),propertyDefinition.getType().toString(),
+                        null, null,
+                        propertyDefinition.getValue().isRandomInitialize()));
+            }
         }
 
         return propertyDefinitionDTOList;
