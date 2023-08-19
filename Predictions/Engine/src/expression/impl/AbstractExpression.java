@@ -3,9 +3,10 @@ package expression.impl;
 import expression.ExpressionType;
 import expression.api.Expression;
 
+import java.io.Serializable;
 import java.util.Objects;
 
-public abstract class AbstractExpression implements Expression {
+public abstract class AbstractExpression implements Expression, Serializable {
     private final String value;
     private ExpressionType type;
 

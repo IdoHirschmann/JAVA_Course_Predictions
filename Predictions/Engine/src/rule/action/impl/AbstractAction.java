@@ -6,7 +6,9 @@ import property.instance.AbstractPropertyInstance;
 import rule.action.ActionType;
 import rule.action.api.Action;
 
-public abstract class AbstractAction implements Action {
+import java.io.Serializable;
+
+public abstract class AbstractAction implements Action, Serializable {
     private EntityDefinition primaryEntityDefinition;
     private ActionType type;
 

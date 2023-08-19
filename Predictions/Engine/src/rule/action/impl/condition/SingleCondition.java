@@ -71,7 +71,9 @@ public class SingleCondition extends AbstractCondition {
         } else if (isAStringProp(context) && isAStringExp()) {
             return propValue.equals(expValue);
         }else{
-            return false;
+            throw new PropertyTypeException("PropertyTypeException: can not try equaling '" + context.getPrimaryEntityInstance().getProperty(property).getValue() + "' and '" + value.GetSimpleValue() + "'.\n" +
+                    "       Note that you can only equal number to number, string to string or boolean to boolean." +
+                    "       Exception thrown while trying to do equal in SingleCondition class");
         }
     }
 
@@ -104,8 +106,9 @@ public class SingleCondition extends AbstractCondition {
     }
     private void checkIfNumberExpression() {
         if(!isANumberExp()) {
-            throw new ExpressionTypeException("ExpressionTypeException: the expression '" + value.GetSimpleValue() + "is not a number!\n" +
-                    "       Note that lt/bt operators in single-condition action has to get numeric arguments. Problem occurred in class SingleCondition when trying to run single-condition action");
+            throw new ExpressionTypeException("ExpressionTypeException: the expression '" + value.GetSimpleValue() + "' is not a number!\n" +
+                    "       Note that lt/bt operators in single-condition action has to get numeric arguments.\n" +
+                    "       Problem occurred in class SingleCondition when trying to run single-condition action");
         }
     }
 }

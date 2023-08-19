@@ -3,9 +3,10 @@ package property.definition;
 import property.definition.range.Range;
 import property.definition.value.PropertyDefinitionValue;
 
+import java.io.Serializable;
 import java.util.Objects;
 
-public class PropertyDefinition {
+public class PropertyDefinition implements Serializable {
     private final String name;
     private final PropertyType type;
     private final Range range;

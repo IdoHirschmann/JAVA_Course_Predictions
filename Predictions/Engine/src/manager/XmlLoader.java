@@ -16,7 +16,7 @@ import java.nio.file.Files;
 
 import static factory.definition.FactoryDefinition.createSimulationDefinition;
 
-public class XmlLoader implements Serializable {
+public class XmlLoader {
     private final static String JAXB_PACKAGE = "schema.generated";
     private String filePath;
     private PRDWorld prdWorld;

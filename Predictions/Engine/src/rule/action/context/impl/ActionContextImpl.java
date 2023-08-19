@@ -5,9 +5,10 @@ import entity.instance.EntityInstanceManager;
 import property.instance.AbstractPropertyInstance;
 import rule.action.context.api.ActionContext;
 
+import java.io.Serializable;
 import java.util.Map;
 
-public class ActionContextImpl implements ActionContext {
+public class ActionContextImpl implements ActionContext, Serializable {
     private EntityInstance primaryEntity;
     private EntityInstanceManager entityManager;
 

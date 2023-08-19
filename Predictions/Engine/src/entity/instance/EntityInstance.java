@@ -3,10 +3,11 @@ package entity.instance;
 import property.definition.PropertyDefinition;
 import property.instance.AbstractPropertyInstance;
 
+import java.io.Serializable;
 import java.util.Map;
 import java.util.Objects;
 
-public class EntityInstance {
+public class EntityInstance implements Serializable {
     private final Map<String, AbstractPropertyInstance> properties;
 
     private Boolean toKill;

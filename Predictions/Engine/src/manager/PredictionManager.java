@@ -3,6 +3,7 @@ package manager;
 import entity.definition.EntityDefinition;
 import entity.instance.EntityInstance;
 import entity.instance.EntityInstanceManager;
+import exception.FileNotFoundException;
 import option1.XmlFullPathDTO;
 import option2.*;
 import option3.*;
@@ -10,6 +11,7 @@ import option4.AmountDTO;
 import option4.PastSimulationInfoDTO;
 import option4.SimulationDesiredInfoDTO;
 import option4.histogram.*;
+import option56.FilePathDTO;
 import property.definition.PropertyDefinition;
 import property.instance.AbstractPropertyInstance;
 import rule.Rule;
@@ -18,16 +20,12 @@ import simulation.impl.Simulation;
 import simulation.definition.SimulationDefinition;
 
 import javax.xml.bind.JAXBException;
-import java.io.IOException;
-import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.io.*;
+import java.util.*;
 
 import static factory.instance.FactoryInstance.createSimulation;
 
-public class PredictionManager implements Serializable {
+public class PredictionManager {
     private SimulationDefinition simulationDefinition;
     private List<Simulation> simulations;
     private XmlLoader xmlLoader;
@@ -41,9 +39,31 @@ public class PredictionManager implements Serializable {
         currIDNum = 1;
     }
 
+    public void storeDataToFile(FilePathDTO filePathDTO){
+        try (ObjectOutputStream outputStream = new ObjectOutputStream(new FileOutputStream(filePathDTO.getFilePath()))) {
+            outputStream.writeObject(simulationDefinition);
+            outputStream.writeObject(simulations);
+            outputStream.writeObject(currIDNum);
+            outputStream.flush();
+        } catch (Exception ignore) {
+            throw new FileNotFoundException("file not found, please type a valid file path" + ignore.getMessage());
+        }
+    }
+    public void loadDataFromFile(FilePathDTO filePathDTO){
+        try (ObjectInputStream inputStream = new ObjectInputStream(new FileInputStream(filePathDTO.getFilePath()))) {
+            simulationDefinition = (SimulationDefinition) inputStream.readObject();
+            simulations = (List<Simulation>) inputStream.readObject();
+            currIDNum = (Integer) inputStream.readObject();
+        } catch (Exception ignore) {
+            throw new FileNotFoundException("file not found, please type a valid file path");
+        }
+    }
+
     public void loadXmlData(XmlFullPathDTO xmlFullPathDTO) throws JAXBException, IOException {
         SimulationDefinition newSimulationDefinition = xmlLoader.loadXmlData(xmlFullPathDTO.getFullPathXML());
         this.simulationDefinition = newSimulationDefinition;
+        simulations.clear();
+        currIDNum = 1;
     }
 
 

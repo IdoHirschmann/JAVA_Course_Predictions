@@ -1,5 +1,7 @@
 package property.definition;
 
-public enum PropertyType {
+import java.io.Serializable;
+
+public enum PropertyType implements Serializable {
     DECIMAL, FLOAT, STRING, BOOLEAN
 }

@@ -4,7 +4,9 @@ import entity.definition.EntityDefinition;
 import rule.action.ActionType;
 import rule.action.context.api.ActionContext;
 
-public interface Action {
+import java.io.Serializable;
+
+public interface Action  {
     ActionType getType();
     EntityDefinition getPrimaryEntityDefinition();
     void Invoke(ActionContext context);

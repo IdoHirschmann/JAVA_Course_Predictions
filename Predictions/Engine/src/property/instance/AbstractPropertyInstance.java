@@ -3,7 +3,9 @@ package property.instance;
 import property.definition.PropertyType;
 import property.definition.range.Range;
 
-public abstract class AbstractPropertyInstance {
+import java.io.Serializable;
+
+public abstract class AbstractPropertyInstance implements Serializable {
     private final String name;
     private final Range range;
 

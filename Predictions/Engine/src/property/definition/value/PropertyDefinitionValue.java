@@ -1,6 +1,8 @@
 package property.definition.value;
 
-public class PropertyDefinitionValue {
+import java.io.Serializable;
+
+public class PropertyDefinitionValue implements Serializable {
     private final boolean randomInitialize;
     private final String init;
 

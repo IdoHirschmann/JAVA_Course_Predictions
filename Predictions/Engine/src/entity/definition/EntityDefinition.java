@@ -2,9 +2,10 @@ package entity.definition;
 
 import property.definition.PropertyDefinition;
 
+import java.io.Serializable;
 import java.util.Map;
 
-public class EntityDefinition {
+public class EntityDefinition implements Serializable {
     private final String name;
     private Map<String, PropertyDefinition> properties;
     private final int population;

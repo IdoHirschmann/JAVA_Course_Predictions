@@ -9,12 +9,13 @@ import rule.action.context.impl.ActionContextImpl;
 import rule.action.impl.Kill;
 import rule.activation.Activation;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Random;
 
-public class Rule {
+public class Rule implements Serializable {
     private String name;
     private Activation activation;
     private List<Action> actions;

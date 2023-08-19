@@ -218,7 +218,8 @@ public abstract class ActionCreator {
     private static void checkIfNumberExpression(Expression expression, String desireAction) {
         if(expression.getType() != ExpressionType.INT && expression.getType() != ExpressionType.FLOAT){
             throw new ExpressionTypeException("ExpressionTypeException: the expression '" + expression.GetSimpleValue() + "' is not a number!\n" +
-                    "       Note that " + desireAction + " action has to get numeric arguments. Problem occurred in class ActionCreator when trying to create " + desireAction + " action");
+                    "       Note that " + desireAction + " action has to get numeric arguments.\n" +
+                    "       Problem occurred in class ActionCreator when trying to create " + desireAction + " action");
         }
     }
     private static String checkIfMultiplyOrDivide(PRDAction prdAction) {

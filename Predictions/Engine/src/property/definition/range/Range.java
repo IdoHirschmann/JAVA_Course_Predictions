@@ -1,6 +1,8 @@
 package property.definition.range;
 
-public class Range {
+import java.io.Serializable;
+
+public class Range implements Serializable {
     private double from;
     private double to;
 

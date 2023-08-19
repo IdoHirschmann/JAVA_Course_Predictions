@@ -1,6 +1,8 @@
 package rule.activation;
 
-public class Activation {
+import java.io.Serializable;
+
+public class Activation implements Serializable {
     private Integer ticks = 1;
     private Double probability = 1.0;
 
